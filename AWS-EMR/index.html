@@ -178,12 +178,14 @@
 <h1 id="Amazon-Elastic-Map-Reduce-EMR"><a href="#Amazon-Elastic-Map-Reduce-EMR" class="headerlink" title="Amazon Elastic Map Reduce (EMR)"></a>Amazon Elastic Map Reduce (EMR)</h1><p><img src="../img/aws.png"></p>
 <ul>
 <li>AWS에서 제공하는 Mapreduce service</li>
-<li>오픈 소스인 AWS 하둡, apache spark, Hbase와 같은 분산 프레임워크를 활용하여 분산 처리 시스템을 실행하고, 다른 서비스들과 연동할 수 있는 서비스<blockquote>
+<li><p>오픈 소스인 AWS 하둡, apache spark, Hbase와 같은 분산 프레임워크를 활용하여 분산 처리 시스템을 실행하고, 다른 서비스들과 연동할 수 있는 서비스</p>
+<blockquote>
 <p>클릭 스트림 분석, 실시간 분석, 로그분석</p>
 </blockquote>
 </li>
+<li><p>ec2 컴퓨터와 S3의 하드를 이용하여 MapReduce 연산 진행 - 가장 load가 큰 작업은 IO작업</p>
+</li>
 </ul>
-<p>-ec2 컴퓨터와 S3의 하드를 이용하여 MapReduce 연산 진행</p>
 <h2 id="create-EMR"><a href="#create-EMR" class="headerlink" title="create EMR"></a>create EMR</h2><ul>
 <li><p>Cluster : 연산을 담당하는 EC2, job을 정의하는 Step, hadoop등 프레임워크 모음</p>
 <blockquote>
@@ -208,7 +210,7 @@
 
 
 
-    <a data-url="http://Q00.github.io/AWS-EMR/" data-id="cjjmpz0rb0000hvvwn3fawl4r" class="article-share-link"><i class="fa fa-share"></i>공유하기</a>
+    <a data-url="http://Q00.github.io/AWS-EMR/" data-id="cjjmq1svp000siuvwyl5tbazp" class="article-share-link"><i class="fa fa-share"></i>공유하기</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
