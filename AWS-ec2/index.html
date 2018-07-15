@@ -200,11 +200,12 @@
 <h2 id="ec2-생성할-떄"><a href="#ec2-생성할-떄" class="headerlink" title="ec2 생성할 떄"></a>ec2 생성할 떄</h2><p>t1.micro : 반가상화 Amazon Linux AMI 선택했으면 t1만 사용가능<br>t2.micro : 하드웨어 가상화 Amazon Linux AMI 선택했으면 t2만 사용가능</p>
 <p>cpu 많이 쓰는 컴파일 작업을 할때는 t2인스턴스 유형이 유리함</p>
 <h3 id="configure-instance-details"><a href="#configure-instance-details" class="headerlink" title="configure instance details"></a>configure instance details</h3><p>number of instances : 생성할 인스턴스 개수<br>purchasing option : 스팟 인스턴스의 구매 옵션<br>network : vpc 네트워크를 선택하는 옵션<br>subnet :  Availability Zone(가용영역)을 선택하는 옵션<br>public ip : 공인 ip 할당하는 옵션<br>IAM role : IAM 역할 설정<br>shutdown behavior : ec2 인스턴스 안에 설치된 운영체제를 종료했을 때의 행동을 설정  (stop terminate)<br>enale Termination protection : 실수로 삭제하는 것을 방지하는 옵션<br>Monitoring : cloudwatch 세부 모니터링 사용 옵션<br>tenancy : 가상 서버 실행 방식을 설정하는 옵션: 공유 인스턴스(shared tenancy) 전용인스턴스(Dedicated tenancy)를 선택가능</p>
-<h3 id="add-storage"><a href="#add-storage" class="headerlink" title="add storage"></a>add storage</h3><p>type: 루트장치(EBS)인지 추가장치(EBS, instance storage)인지<br>device : linux  장치<br>Snapshot :스냅샷id<br>size : 스토리지 크기 (gb단위)<br>Volume type: 스토리지 볼륨 유형 magnetic, general purpose(SSD) provisioned IOPS(SSD) 선택할 수있음<br>magnetic : 하드디스클 사용하는 스토리지 100IOPS<br>general purpose : ssd - 1GiB당 3IOPS를 제공하는 스토리지. 마그네틱보다추가요금발생<br>3600 초 동안 3000iops까지 성능이 높아지는 burst기능 제공(순간적으로 io가 몰릴때 iops를 높임)<br>provisioned iops : ssd를 사용하고, I/O 대역폭을 설정할 수 있음, 마그네틱보다 추가요금발생<br>IOPS : volume type 을 provisioned IOPS 로 선택했을때 IOPS를 설정가능<br>delete on termination : ec2 인스턴스가 실행되고 있을때 스토리지가 실수로 삭제되는 것을 방지.</p>
+<h3 id="add-storage"><a href="#add-storage" class="headerlink" title="add storage"></a>add storage</h3><p>type: 루트장치(EBS)인지 추가장치(EBS, instance storage)인지<br>Snapshot :스냅샷id<br>size : 스토리지 크기 (gb단위)<br>Volume type: 스토리지 볼륨 유형 magnetic, general purpose(SSD) provisioned IOPS(SSD) 선택할 수있음<br>magnetic : 하드디스클 사용하는 스토리지 100IOPS<br>general purpose : ssd - 1GiB당 3IOPS를 제공하는 스토리지. 마그네틱보다추가요금발생<br>3600 초 동안 3000iops까지 성능이 높아지는 burst기능 제공(순간적으로 io가 몰릴때 iops를 높임)<br>provisioned iops : ssd를 사용하고, I/O 대역폭을 설정할 수 있음, 마그네틱보다 추가요금발생<br>IOPS : volume type 을 provisioned IOPS 로 선택했을때 IOPS를 설정가능<br>delete on termination : ec2 인스턴스가 실행되고 있을때 스토리지가 실수로 삭제되는 것을 방지.</p>
 <h3 id="puuty-ssh-접속"><a href="#puuty-ssh-접속" class="headerlink" title="puuty ssh 접속"></a>puuty ssh 접속</h3><p>ec2 서버 인스턴스 생성 후 key value pem file 다운로드 후 puttygen -&gt; ppt file 컨버전</p>
 <blockquote>
 <p>기본 사용자명<br>amazon linux : ec2-user<br>rhel: ec2-user<br>SuSE Linux : root<br>Ubuntu Linux : ubuntu</p>
 </blockquote>
+<h2 id="ec2-기타-설정-및-기능"><a href="#ec2-기타-설정-및-기능" class="headerlink" title="ec2 기타 설정 및 기능"></a>ec2 기타 설정 및 기능</h2><p>placement group : 물리적으로 인접한 곳에 ec2인스턴스 생성 -&gt; 네트워크 퍼포먼스 극대화’<br>bundle instance(instance store ami) : 인스턴스 스토리지를 루트장치로 사용하는 windows instance의 내용을 s3버킷에 저장하는 기능<br>bundle task : bundle instance가 처리되는 과정<br>network interface : ENI(Elastic network interface) 생성하고 ec2인스턴스에 장착</p>
 
         </div>
         <footer class="article-footer">
@@ -212,7 +213,7 @@
 
 
 
-    <a data-url="http://Q00.github.io/AWS-ec2/" data-id="cjjmi1ic800015zvwswrd6zh0" class="article-share-link"><i class="fa fa-share"></i>공유하기</a>
+    <a data-url="http://Q00.github.io/AWS-ec2/" data-id="cjjmkdqq10003fyvwhpx4dm5a" class="article-share-link"><i class="fa fa-share"></i>공유하기</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -384,6 +385,66 @@
                     <li>
                         
                         <div class="item-thumbnail">
+                            <a href="/AWS-key-pair-위치/" class="thumbnail">
+    
+    
+        <span style="background-image:url(../img/aws.png)" alt="AWS-key-pair-위치" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/AWS-key-pair-위치/" class="title">AWS-key-pair-위치</a></p>
+                            <p class="item-date"><time datetime="2018-07-15T07:51:48.000Z" itemprop="datePublished">2018-07-15</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/AWS-Elastic-IP/" class="thumbnail">
+    
+    
+        <span style="background-image:url(../img/aws.png)" alt="AWS-Elastic-IP" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/AWS-Elastic-IP/" class="title">AWS-Elastic-IP</a></p>
+                            <p class="item-date"><time datetime="2018-07-15T07:42:59.000Z" itemprop="datePublished">2018-07-15</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/AWS-Security-Group/" class="thumbnail">
+    
+    
+        <span style="background-image:url(../img/aws.png)" alt="AWS-Security_Group" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/AWS-Security-Group/" class="title">AWS-Security_Group</a></p>
+                            <p class="item-date"><time datetime="2018-07-15T07:30:31.000Z" itemprop="datePublished">2018-07-15</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
                             <a href="/AWS-EBS/" class="thumbnail">
     
     
@@ -421,26 +482,6 @@
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/hello-world/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/hello-world/" class="title">Hello World</a></p>
-                            <p class="item-date"><time datetime="2018-04-21T05:13:04.712Z" itemprop="datePublished">2018-04-21</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -453,7 +494,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">아카이브</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">7월 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">4월 2018</a><span class="archive-list-count">1</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">7월 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">4월 2018</a><span class="archive-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -463,7 +504,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">태그</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AWS/">AWS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EBS/">EBS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ec2/">ec2</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AWS/">AWS</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EBS/">EBS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elastic-IP/">Elastic_IP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/KEY-PAIR/">KEY-PAIR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LINUX/">LINUX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH-RSA/">SSH-RSA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Security-Group/">Security_Group</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ec2/">ec2</a><span class="tag-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -473,7 +514,7 @@
     <div class="widget-wrap widget-float">
         <h3 class="widget-title">태그 클라우드</h3>
         <div class="widget tagcloud">
-            <a href="/tags/AWS/" style="font-size: 20px;">AWS</a> <a href="/tags/EBS/" style="font-size: 10px;">EBS</a> <a href="/tags/ec2/" style="font-size: 10px;">ec2</a>
+            <a href="/tags/AWS/" style="font-size: 20px;">AWS</a> <a href="/tags/EBS/" style="font-size: 10px;">EBS</a> <a href="/tags/Elastic-IP/" style="font-size: 10px;">Elastic_IP</a> <a href="/tags/KEY-PAIR/" style="font-size: 10px;">KEY-PAIR</a> <a href="/tags/LINUX/" style="font-size: 10px;">LINUX</a> <a href="/tags/SSH-RSA/" style="font-size: 10px;">SSH-RSA</a> <a href="/tags/Security-Group/" style="font-size: 10px;">Security_Group</a> <a href="/tags/ec2/" style="font-size: 10px;">ec2</a>
         </div>
     </div>
 
