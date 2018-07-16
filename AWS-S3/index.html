@@ -12,18 +12,18 @@
     
         <meta name="keywords" content="" />
     
-    <meta name="description" content="S3 ( Amazon Simple Storage Service) 인터넷용 스토리지 서비스. 개발자가 보다 쉽게 웹 규모 컴퓨팅 작업이 가능하도록 설계  언제 어디서나 원하는 양의 데이터를 저장하고 검색가능  S3를 써야하는 이유성능">
+    <meta name="description" content="S3 ( Amazon Simple Storage Service) 인터넷용 스토리지 서비스. 개발자가 보다 쉽게 웹 규모 컴퓨팅 작업이 가능하도록 설계  언제 어디서나 원하는 양의 데이터를 저장하고 검색가능  S3를 써야하는 이유성능, 비용, 대용량의 파일을 ec2와 EBS를 통해 구축한다면 상당히 많은 비용이 들고 노력이 요구된다.  S3 는 저장용량이 무">
 <meta property="og:type" content="article">
 <meta property="og:title" content="AWS-S3">
 <meta property="og:url" content="http://Q00.github.io/AWS-S3/index.html">
 <meta property="og:site_name" content="Q00 blog">
-<meta property="og:description" content="S3 ( Amazon Simple Storage Service) 인터넷용 스토리지 서비스. 개발자가 보다 쉽게 웹 규모 컴퓨팅 작업이 가능하도록 설계  언제 어디서나 원하는 양의 데이터를 저장하고 검색가능  S3를 써야하는 이유성능">
+<meta property="og:description" content="S3 ( Amazon Simple Storage Service) 인터넷용 스토리지 서비스. 개발자가 보다 쉽게 웹 규모 컴퓨팅 작업이 가능하도록 설계  언제 어디서나 원하는 양의 데이터를 저장하고 검색가능  S3를 써야하는 이유성능, 비용, 대용량의 파일을 ec2와 EBS를 통해 구축한다면 상당히 많은 비용이 들고 노력이 요구된다.  S3 는 저장용량이 무">
 <meta property="og:locale" content="ko">
 <meta property="og:image" content="http://q00.github.io/img/aws.png">
 <meta property="og:updated_time" content="2018-07-15T08:32:01.858Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AWS-S3">
-<meta name="twitter:description" content="S3 ( Amazon Simple Storage Service) 인터넷용 스토리지 서비스. 개발자가 보다 쉽게 웹 규모 컴퓨팅 작업이 가능하도록 설계  언제 어디서나 원하는 양의 데이터를 저장하고 검색가능  S3를 써야하는 이유성능">
+<meta name="twitter:description" content="S3 ( Amazon Simple Storage Service) 인터넷용 스토리지 서비스. 개발자가 보다 쉽게 웹 규모 컴퓨팅 작업이 가능하도록 설계  언제 어디서나 원하는 양의 데이터를 저장하고 검색가능  S3를 써야하는 이유성능, 비용, 대용량의 파일을 ec2와 EBS를 통해 구축한다면 상당히 많은 비용이 들고 노력이 요구된다.  S3 는 저장용량이 무">
 <meta name="twitter:image" content="http://q00.github.io/img/aws.png">
     
 
@@ -169,7 +169,32 @@
 <blockquote>
 <p>언제 어디서나 원하는 양의 데이터를 저장하고 검색가능</p>
 </blockquote>
-<h1 id="S3를-써야하는-이유"><a href="#S3를-써야하는-이유" class="headerlink" title="S3를 써야하는 이유"></a>S3를 써야하는 이유</h1><p>성능 </p>
+<h2 id="S3를-써야하는-이유"><a href="#S3를-써야하는-이유" class="headerlink" title="S3를 써야하는 이유"></a>S3를 써야하는 이유</h2><p>성능, 비용, 대용량의 파일을 ec2와 EBS를 통해 구축한다면 상당히 많은 비용이 들고 노력이 요구된다.</p>
+<blockquote>
+<p>S3 는 저장용량이 무한대, 파일 저장에 최적화, 비용도 저렴</p>
+</blockquote>
+<blockquote>
+<p>S3 자체가 수천대의 웹서버로 구성, 자동 횡적확장(auto scailing) 부한분산 (load balancing) 신경쓰지 않아도 된다.</p>
+</blockquote>
+<p>S3 url(endpoint) 를 dns 서버에 cname으로 설정하여 정적 웹페이지 index로 접속할 수 있게 해준다.</p>
+<blockquote>
+<p>동적웹페이지(asp, jsp, php..)와 정적 웹페이지가 섞여 있다면 동적 웹페이지만 ec2에서 서비스, 정적 웹페이지는 S3 이용하면 성능 높일 수 있다.</p>
+</blockquote>
+<h2 id="S3-기본-개념"><a href="#S3-기본-개념" class="headerlink" title="S3 기본 개념"></a>S3 기본 개념</h2><p>object : S3에 데이터가 저장되는 최소단위, 파일과 메타데이터로 구성, key-value로 구성</p>
+<blockquote>
+<p>메타 데이터는 http content type 형식 (MIME) 파일의 확장자에 따라 자동으로 설정되며 임의로 설정할 수도 있음<br>객체의 개수는 제한 없으나 객체 하나당 용량은 5TB로 제한. (Each object can contain up to 5 TB of data)</p>
+</blockquote>
+<h3 id="헤더설정"><a href="#헤더설정" class="headerlink" title="헤더설정"></a>헤더설정</h3><ul>
+<li>cached control : 브라우저 캐시정책설정, 만기시간 설정</li>
+<li>content disposition : value에 attachment로 설정하면 바로 파일 다운로드 할 수 있게함</li>
+<li>content type : 웹 브라우저에서 파일을 어떻게 처리해야하는지 알려주는 메타데이터</li>
+</ul>
+<h2 id="S3-데이터-일관성-모델"><a href="#S3-데이터-일관성-모델" class="headerlink" title="S3 데이터 일관성 모델"></a>S3 데이터 일관성 모델</h2><ul>
+<li>S3는 읽기 후 쓰기 일관성 제공함(Write-After-Read consistency for a type of PUT)</li>
+<li>단일 키에 대한 업데이트는 원자성에 바탕을 둠 (Atomic) -&gt;&gt; 최종 일관성(eventual consistency)</li>
+<li>S3에서는 Amaon 여러 서버로 데이터 복제 -&gt; 고가용성 구현 </li>
+<li>변경사항 발생시 변경사항이 완전히 전파될 때 까지 기존의 데이터를 사용할 수 있음</li>
+</ul>
 
         </div>
         <footer class="article-footer">
@@ -177,7 +202,7 @@
 
 
 
-    <a data-url="http://Q00.github.io/AWS-S3/" data-id="cjjmq1str0001iuvwaop3z37e" class="article-share-link"><i class="fa fa-share"></i>공유하기</a>
+    <a data-url="http://Q00.github.io/AWS-S3/" data-id="cjjohtouv0005lwvwwca4y583" class="article-share-link"><i class="fa fa-share"></i>공유하기</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -349,6 +374,46 @@
                     <li>
                         
                         <div class="item-thumbnail">
+                            <a href="/AWS-AMI/" class="thumbnail">
+    
+    
+        <span style="background-image:url(../img/aws.png)" alt="AWS-AMI" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/AWS-AMI/" class="title">AWS-AMI</a></p>
+                            <p class="item-date"><time datetime="2018-07-16T14:38:36.000Z" itemprop="datePublished">2018-07-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/AWS-CloudTrail/" class="thumbnail">
+    
+    
+        <span style="background-image:url(../img/aws.png)" alt="AWS-CloudTrail" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/AWS-CloudTrail/" class="title">AWS-CloudTrail</a></p>
+                            <p class="item-date"><time datetime="2018-07-15T12:59:30.000Z" itemprop="datePublished">2018-07-15</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
                             <a href="/AWS-EMR/" class="thumbnail">
     
     
@@ -406,46 +471,6 @@
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/AWS-Elastic-IP/" class="thumbnail">
-    
-    
-        <span style="background-image:url(../img/aws.png)" alt="AWS-Elastic-IP" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/AWS-Elastic-IP/" class="title">AWS-Elastic-IP</a></p>
-                            <p class="item-date"><time datetime="2018-07-15T07:42:59.000Z" itemprop="datePublished">2018-07-15</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/AWS-Security-Group/" class="thumbnail">
-    
-    
-        <span style="background-image:url(../img/aws.png)" alt="AWS-Security_Group" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/AWS-Security-Group/" class="title">AWS-Security_Group</a></p>
-                            <p class="item-date"><time datetime="2018-07-15T07:30:31.000Z" itemprop="datePublished">2018-07-15</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -458,7 +483,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">아카이브</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">7월 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">4월 2018</a><span class="archive-list-count">1</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">7월 2018</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">4월 2018</a><span class="archive-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -468,7 +493,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">태그</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AWS/">AWS</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EBS/">EBS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EMR/">EMR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elastic-IP/">Elastic_IP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/KEY-PAIR/">KEY-PAIR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LINUX/">LINUX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MapReduce/">MapReduce</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH-RSA/">SSH-RSA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Security-Group/">Security_Group</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ec2/">ec2</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AMI/">AMI</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AWS/">AWS</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CloudTrail/">CloudTrail</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EBS/">EBS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EMR/">EMR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elastic-IP/">Elastic_IP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/KEY-PAIR/">KEY-PAIR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LINUX/">LINUX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MapReduce/">MapReduce</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH-RSA/">SSH-RSA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Security-Group/">Security_Group</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ec2/">ec2</a><span class="tag-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -478,7 +503,7 @@
     <div class="widget-wrap widget-float">
         <h3 class="widget-title">태그 클라우드</h3>
         <div class="widget tagcloud">
-            <a href="/tags/AWS/" style="font-size: 20px;">AWS</a> <a href="/tags/EBS/" style="font-size: 10px;">EBS</a> <a href="/tags/EMR/" style="font-size: 10px;">EMR</a> <a href="/tags/Elastic-IP/" style="font-size: 10px;">Elastic_IP</a> <a href="/tags/KEY-PAIR/" style="font-size: 10px;">KEY-PAIR</a> <a href="/tags/LINUX/" style="font-size: 10px;">LINUX</a> <a href="/tags/MapReduce/" style="font-size: 10px;">MapReduce</a> <a href="/tags/SSH-RSA/" style="font-size: 10px;">SSH-RSA</a> <a href="/tags/Security-Group/" style="font-size: 10px;">Security_Group</a> <a href="/tags/ec2/" style="font-size: 10px;">ec2</a>
+            <a href="/tags/AMI/" style="font-size: 10px;">AMI</a> <a href="/tags/AWS/" style="font-size: 20px;">AWS</a> <a href="/tags/CloudTrail/" style="font-size: 10px;">CloudTrail</a> <a href="/tags/EBS/" style="font-size: 10px;">EBS</a> <a href="/tags/EMR/" style="font-size: 10px;">EMR</a> <a href="/tags/Elastic-IP/" style="font-size: 10px;">Elastic_IP</a> <a href="/tags/KEY-PAIR/" style="font-size: 10px;">KEY-PAIR</a> <a href="/tags/LINUX/" style="font-size: 10px;">LINUX</a> <a href="/tags/MapReduce/" style="font-size: 10px;">MapReduce</a> <a href="/tags/SSH-RSA/" style="font-size: 10px;">SSH-RSA</a> <a href="/tags/Security-Group/" style="font-size: 10px;">Security_Group</a> <a href="/tags/ec2/" style="font-size: 10px;">ec2</a>
         </div>
     </div>
 
