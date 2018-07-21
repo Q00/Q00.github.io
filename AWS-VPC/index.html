@@ -21,7 +21,7 @@
 <meta property="og:description" content="VPC (Virtual Private Cloud) 사용자만의 가상 네트워크 제공  VPC는 무료, but VPC를 VPN에 연결할 경우 요금 부과   AWS에 가입하면 이미 하나의 VPC 존재 VPC 안에는 서브넷을 여러개 추가하여 네트워크 격리, 서브넷간의 접근제어(ACL) 설정가능(웹서버 -&amp;gt; 공개 서브넷, db서버 -&amp;gt; 사설 서브넷 보안 유">
 <meta property="og:locale" content="ko">
 <meta property="og:image" content="http://q00.github.io/img/vpc.png">
-<meta property="og:updated_time" content="2018-07-17T06:19:53.131Z">
+<meta property="og:updated_time" content="2018-07-21T06:28:22.170Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AWS-VPC">
 <meta name="twitter:description" content="VPC (Virtual Private Cloud) 사용자만의 가상 네트워크 제공  VPC는 무료, but VPC를 VPN에 연결할 경우 요금 부과   AWS에 가입하면 이미 하나의 VPC 존재 VPC 안에는 서브넷을 여러개 추가하여 네트워크 격리, 서브넷간의 접근제어(ACL) 설정가능(웹서버 -&amp;gt; 공개 서브넷, db서버 -&amp;gt; 사설 서브넷 보안 유">
@@ -181,10 +181,18 @@
 </li>
 <li><p>VPC : 리전별 생성</p>
 </li>
-<li>서브넷 : az별 생성<blockquote>
+<li><p>서브넷 : az별 생성</p>
+<blockquote>
 <p>CIDR 표기법으로 IP 대역 설정</p>
 </blockquote>
 </li>
+<li><p>서브넷에 있는 인스턴스 launch</p>
+</li>
+<li>각각 서브넷에 IP 대역 설정</li>
+<li>서브넷 사이의 Route table 설정</li>
+<li>VPC당 한개의 Internet Gateway를 붙일 수 있음 (한개의 Internet gateway가 모든 az와 연결되어있음)</li>
+<li>aws resource에 대해 보안적인 관리가 가능함(ACL)</li>
+<li>Security group 설정 가능함</li>
 </ul>
 <p>VPC에 속한 서브넷에서 외부 인터넷에 접속하려면 인터넷 게이트웨이가 필요하다.</p>
 <blockquote>
@@ -212,6 +220,7 @@
 <li><p>Subnet</p>
 <ul>
 <li>하나의 VPC에 여러개 subnet존재가능</li>
+<li>1 Subnet = 1 AZ</li>
 </ul>
 </li>
 <li><p>Route Table</p>
@@ -223,6 +232,9 @@
 </ul>
 </li>
 <li><p>Nat Instances</p>
+<ul>
+<li>NAT 안에 있는 private subnet이 인터넷 통신을 하기 위해서는 source/destination check을 unable해줘야함</li>
+</ul>
 </li>
 <li><p>Security group</p>
 <ul>
@@ -234,6 +246,7 @@
 <ul>
 <li>서브넷에 연결된 방화벽</li>
 <li>allow deny 규칙 설정 가능</li>
+<li>stateless</li>
 </ul>
 </li>
 <li><p>Virtual private gateway</p>
@@ -242,6 +255,14 @@
 <li>AWS VPC와 외부 사용자가 이용하고 있는 내부 네트워크 간의 연결</li>
 </ul>
 </li>
+<li><p>Security Groups</p>
+<ul>
+<li>Stateful -&gt; server side에 응답, 요청에 대해 미리 정의해놓음(상태정보를 저장하는 형태)<h2 id="Default-VPC-vs-Custom-VPC"><a href="#Default-VPC-vs-Custom-VPC" class="headerlink" title="Default VPC vs Custom VPC"></a>Default VPC vs Custom VPC</h2></li>
+</ul>
+</li>
+<li>Default VPC는 바로 인스턴스 배포가가능</li>
+<li>Default VPC의 서브넷은 외부 인터넷과 통신이 가능</li>
+<li>Default VPC의 EC2 인스턴스는 public, private IP 어드레스를 둘다 가지고 있음</li>
 </ul>
 <h2 id="EC2-인스턴스에-VPN-구축"><a href="#EC2-인스턴스에-VPN-구축" class="headerlink" title="EC2 인스턴스에 VPN 구축"></a>EC2 인스턴스에 VPN 구축</h2><p>VPN 하드웨어 장비나 서버를 구축하지 않고 개인 PC에서 VPN을 사용하려면 aws marketplace의 OpenVPN AMI를 사용(따로 PPTP 서버 구축해도 됨)</p>
 <blockquote>
@@ -250,6 +271,16 @@
 <blockquote>
 <p>참조 : <a href="http://arisu1000.tistory.com/27744" target="_blank" rel="noopener">http://arisu1000.tistory.com/27744</a></p>
 </blockquote>
+<h2 id="VPC-peering"><a href="#VPC-peering" class="headerlink" title="VPC peering"></a>VPC peering</h2><ul>
+<li>VPC와 다른 VPC를 Direct network route를 하는 것(private IP address를 통해)</li>
+<li>non-overlaping CIDR Block인 경우에 피어링 가능</li>
+<li>IPv6 인 경우에 불가능</li>
+<li>다른 AWS 계정의 VPC와도 연결 가능<blockquote>
+<p><a href="https://docs.aws.amazon.com/ko_kr/AmazonVPC/latest/PeeringGuide/invalid-peering-configurations.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/ko_kr/AmazonVPC/latest/PeeringGuide/invalid-peering-configurations.html</a></p>
+</blockquote>
+</li>
+<li>No Transitive peering(이행성 안됨)<br>세개의 vpc 중 한쪽에만 나머지 두개의 vpc가 연결되어있고 나머지 두개의 vpc로 peering 하기 위해서는 직접 peering 연결이 필요하다.</li>
+</ul>
 
         </div>
         <footer class="article-footer">
@@ -257,7 +288,7 @@
 
 
 
-    <a data-url="http://Q00.github.io/AWS-VPC/" data-id="cjjpuu4xd000lsvvwiaokh6t8" class="article-share-link"><i class="fa fa-share"></i>공유하기</a>
+    <a data-url="http://Q00.github.io/AWS-VPC/" data-id="cjjv43keo000i2lvwy3wofbma" class="article-share-link"><i class="fa fa-share"></i>공유하기</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -429,10 +460,70 @@
                     <li>
                         
                         <div class="item-thumbnail">
-                            <a href="/AWS-ELB/" class="thumbnail">
+                            <a href="/AWS-RDS/" class="thumbnail">
     
     
         <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/AWS-RDS/" class="title">AWS-RDS</a></p>
+                            <p class="item-date"><time datetime="2018-07-21T07:41:08.000Z" itemprop="datePublished">2018-07-21</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/AWS-OpsWork/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/AWS-OpsWork/" class="title">AWS-OpsWork</a></p>
+                            <p class="item-date"><time datetime="2018-07-18T15:05:57.000Z" itemprop="datePublished">2018-07-19</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/AWS-IAM/" class="thumbnail">
+    
+    
+        <span style="background-image:url(../img/aws.png)" alt="AWS-IAM" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/AWS-IAM/" class="title">AWS-IAM</a></p>
+                            <p class="item-date"><time datetime="2018-07-18T14:39:50.000Z" itemprop="datePublished">2018-07-18</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/AWS-ELB/" class="thumbnail">
+    
+    
+        <span style="background-image:url(../img/elb.png)" alt="AWS-ELB" class="thumbnail-image"></span>
     
     
 </a>
@@ -466,66 +557,6 @@
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/AWS-AMI/" class="thumbnail">
-    
-    
-        <span style="background-image:url(../img/aws.png)" alt="AWS-AMI" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/AWS-AMI/" class="title">AWS-AMI</a></p>
-                            <p class="item-date"><time datetime="2018-07-16T14:38:36.000Z" itemprop="datePublished">2018-07-16</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/AWS-CloudTrail/" class="thumbnail">
-    
-    
-        <span style="background-image:url(../img/aws.png)" alt="AWS-CloudTrail" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/AWS-CloudTrail/" class="title">AWS-CloudTrail</a></p>
-                            <p class="item-date"><time datetime="2018-07-15T12:59:30.000Z" itemprop="datePublished">2018-07-15</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/AWS-EMR/" class="thumbnail">
-    
-    
-        <span style="background-image:url(../img/aws.png)" alt="AWS-EMR" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/AWS-EMR/" class="title">AWS-EMR</a></p>
-                            <p class="item-date"><time datetime="2018-07-15T10:03:27.000Z" itemprop="datePublished">2018-07-15</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -538,7 +569,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">아카이브</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">7월 2018</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">4월 2018</a><span class="archive-list-count">1</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">7월 2018</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">4월 2018</a><span class="archive-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -548,7 +579,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">태그</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AMI/">AMI</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AWS/">AWS</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CloudTrail/">CloudTrail</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EBS/">EBS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EMR/">EMR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elastic-IP/">Elastic_IP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/KEY-PAIR/">KEY-PAIR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LINUX/">LINUX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MapReduce/">MapReduce</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH-RSA/">SSH-RSA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Security-Group/">Security_Group</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VPC/">VPC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ec2/">ec2</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AMI/">AMI</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AWS/">AWS</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CloudTrail/">CloudTrail</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EBS/">EBS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ELB/">ELB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EMR/">EMR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elastic-IP/">Elastic_IP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IAM/">IAM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/KEY-PAIR/">KEY-PAIR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LINUX/">LINUX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MapReduce/">MapReduce</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpsWork/">OpsWork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH-RSA/">SSH-RSA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Security-Group/">Security_Group</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VPC/">VPC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ec2/">ec2</a><span class="tag-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -558,7 +589,7 @@
     <div class="widget-wrap widget-float">
         <h3 class="widget-title">태그 클라우드</h3>
         <div class="widget tagcloud">
-            <a href="/tags/AMI/" style="font-size: 10px;">AMI</a> <a href="/tags/AWS/" style="font-size: 20px;">AWS</a> <a href="/tags/CloudTrail/" style="font-size: 10px;">CloudTrail</a> <a href="/tags/EBS/" style="font-size: 10px;">EBS</a> <a href="/tags/EMR/" style="font-size: 10px;">EMR</a> <a href="/tags/Elastic-IP/" style="font-size: 10px;">Elastic_IP</a> <a href="/tags/KEY-PAIR/" style="font-size: 10px;">KEY-PAIR</a> <a href="/tags/LINUX/" style="font-size: 10px;">LINUX</a> <a href="/tags/MapReduce/" style="font-size: 10px;">MapReduce</a> <a href="/tags/SSH-RSA/" style="font-size: 10px;">SSH-RSA</a> <a href="/tags/Security-Group/" style="font-size: 10px;">Security_Group</a> <a href="/tags/VPC/" style="font-size: 10px;">VPC</a> <a href="/tags/ec2/" style="font-size: 10px;">ec2</a>
+            <a href="/tags/AMI/" style="font-size: 10px;">AMI</a> <a href="/tags/AWS/" style="font-size: 20px;">AWS</a> <a href="/tags/CloudTrail/" style="font-size: 10px;">CloudTrail</a> <a href="/tags/EBS/" style="font-size: 10px;">EBS</a> <a href="/tags/ELB/" style="font-size: 10px;">ELB</a> <a href="/tags/EMR/" style="font-size: 10px;">EMR</a> <a href="/tags/Elastic-IP/" style="font-size: 10px;">Elastic_IP</a> <a href="/tags/IAM/" style="font-size: 10px;">IAM</a> <a href="/tags/KEY-PAIR/" style="font-size: 10px;">KEY-PAIR</a> <a href="/tags/LINUX/" style="font-size: 10px;">LINUX</a> <a href="/tags/MapReduce/" style="font-size: 10px;">MapReduce</a> <a href="/tags/OpsWork/" style="font-size: 10px;">OpsWork</a> <a href="/tags/SSH-RSA/" style="font-size: 10px;">SSH-RSA</a> <a href="/tags/Security-Group/" style="font-size: 10px;">Security_Group</a> <a href="/tags/VPC/" style="font-size: 10px;">VPC</a> <a href="/tags/ec2/" style="font-size: 10px;">ec2</a>
         </div>
     </div>
 
