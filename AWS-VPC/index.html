@@ -191,7 +191,8 @@
 <p>VPC 인터넷 게이트웨이 생성 후 VPC와 Attach</p>
 </blockquote>
 <h2 id="VPC-구성-요소"><a href="#VPC-구성-요소" class="headerlink" title="VPC 구성 요소"></a>VPC 구성 요소</h2><ul>
-<li>Network Interfaces<ul>
+<li><p>Network Interfaces</p>
+<ul>
 <li>기본적으로 인스턴스마다 VPC 대역내의 사설 IP가 할당된 Network Interface가 있음</li>
 <li>기본 사설 IP외에 추가적인 사설 IP를 가질 수 있음</li>
 <li>eth0으로 이용하는 network interface에 한개의자동할당된 공인 IP를 이용할 수 있음 <blockquote>
@@ -199,12 +200,55 @@
 </blockquote>
 </li>
 <li>사설 IP하나당 EIP 가질 수 있음</li>
+<li>MAC 존재</li>
+</ul>
+</li>
+<li><p>IP Address</p>
+<ul>
+<li>primary private IP와 public IP가 NAT 를 통해 매핑되어있음</li>
+<li>secondary private IP를 할당할 수 있음</li>
+</ul>
+</li>
+<li><p>Subnet</p>
+<ul>
+<li>하나의 VPC에 여러개 subnet존재가능</li>
+</ul>
+</li>
+<li><p>Route Table</p>
+</li>
+<li><p>Internet GateWay</p>
+<ul>
+<li>VPC가 기본생성되었을때 인터넷과 통신 불가</li>
+<li>VPC에 Internet Gateway를 연결해줘야지 VPC내부 인스턴스에서 외부 통신가능</li>
+</ul>
+</li>
+<li><p>Nat Instances</p>
+</li>
+<li><p>Security group</p>
+<ul>
+<li>allow 규칙만 생성</li>
+<li>VPC당 백개 생성, 하나의 그룹에 50개 룰</li>
+</ul>
+</li>
+<li><p>Network access control list(ACL)</p>
+<ul>
+<li>서브넷에 연결된 방화벽</li>
+<li>allow deny 규칙 설정 가능</li>
+</ul>
+</li>
+<li><p>Virtual private gateway</p>
+<ul>
+<li>AWS에 있는 VPN 커넥션</li>
+<li>AWS VPC와 외부 사용자가 이용하고 있는 내부 네트워크 간의 연결</li>
 </ul>
 </li>
 </ul>
 <h2 id="EC2-인스턴스에-VPN-구축"><a href="#EC2-인스턴스에-VPN-구축" class="headerlink" title="EC2 인스턴스에 VPN 구축"></a>EC2 인스턴스에 VPN 구축</h2><p>VPN 하드웨어 장비나 서버를 구축하지 않고 개인 PC에서 VPN을 사용하려면 aws marketplace의 OpenVPN AMI를 사용(따로 PPTP 서버 구축해도 됨)</p>
 <blockquote>
 <p>EC2 인스턴스에 vpn으로 연결하는 것</p>
+</blockquote>
+<blockquote>
+<p>참조 : <a href="http://arisu1000.tistory.com/27744" target="_blank" rel="noopener">http://arisu1000.tistory.com/27744</a></p>
 </blockquote>
 
         </div>
@@ -213,7 +257,7 @@
 
 
 
-    <a data-url="http://Q00.github.io/AWS-VPC/" data-id="cjjptk9pa000aosvwix16rwjv" class="article-share-link"><i class="fa fa-share"></i>공유하기</a>
+    <a data-url="http://Q00.github.io/AWS-VPC/" data-id="cjjpuu4xd000lsvvwiaokh6t8" class="article-share-link"><i class="fa fa-share"></i>공유하기</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -350,6 +394,16 @@
         
 <nav id="article-nav">
     
+        <a href="/AWS-ELB/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">새로운</strong>
+        <p class="article-nav-title">
+        
+            AWS-ELB
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
     
         <a href="/AWS-AMI/" id="article-nav-older" class="article-nav-link-wrap">
         <strong class="article-nav-caption">오래된</strong>
@@ -371,6 +425,26 @@
         <h3 class="widget-title">최근 글</h3>
         <div class="widget">
             <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/AWS-ELB/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/AWS-ELB/" class="title">AWS-ELB</a></p>
+                            <p class="item-date"><time datetime="2018-07-17T15:28:00.000Z" itemprop="datePublished">2018-07-18</time></p>
+                        </div>
+                    </li>
                 
                     <li>
                         
@@ -452,26 +526,6 @@
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/AWS-S3/" class="thumbnail">
-    
-    
-        <span style="background-image:url(../img/aws.png)" alt="AWS-S3" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/AWS-S3/" class="title">AWS-S3</a></p>
-                            <p class="item-date"><time datetime="2018-07-15T08:32:01.000Z" itemprop="datePublished">2018-07-15</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -484,7 +538,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">아카이브</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">7월 2018</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">4월 2018</a><span class="archive-list-count">1</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">7월 2018</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">4월 2018</a><span class="archive-list-count">1</span></li></ul>
         </div>
     </div>
 
