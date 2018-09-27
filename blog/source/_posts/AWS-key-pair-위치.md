@@ -8,7 +8,7 @@ tags:
 - KEY-PAIR
 ---
 
-<img src='../img/aws.png'>
+<img src='https://q00.github.io/img/aws.png'>
 
 key pair 저장위치 : ~/.ssh/authorized_keys
 형식 : ssh-rsa <공개키> <커멘트>

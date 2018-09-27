@@ -8,6 +8,8 @@ tags:
 
 # OpsWork
 
+<img src='https://q00.github.io/img/aws.png'>
+
 > 참고 : http://arisu1000.tistory.com/27736?category=477480
 > https://docs.aws.amazon.com/ko_kr/opsworks/latest/userguide/welcome.html
 

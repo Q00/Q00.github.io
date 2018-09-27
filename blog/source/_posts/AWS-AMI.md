@@ -8,7 +8,8 @@ tags:
 
 # AMI(Amazon Machine Image)
 
-<img src='../img/aws.png'>
+<img src='
+'>
 
 EC2 인스턴스를 생성하기 위한 기본파일
 

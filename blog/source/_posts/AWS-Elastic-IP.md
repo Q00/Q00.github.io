@@ -8,7 +8,7 @@ tags:
 
 # Elastic IP
 
-<img src='../img/aws.png'>
+<img src='https://q00.github.io/img/aws.png'>
 
 동적 클라우드 컴퓨팅을 위해 고안된 고정 IPv4 주소
 - IPv6 지원하지 않음

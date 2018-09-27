@@ -8,10 +8,12 @@ tags:
 
 # ec2 : elastic compute cloud
 
-<img src='../img/aws.png'>
+<img src='https://q00.github.io/img/aws.png'>
 aws에서 가장 기본적이면서 널리쓰이는 인프라 - 인터넷에 연결된 가상서버를 제공해줌
 
 >프리티어 - linux,unix,rhel 마이크로 인스턴스 750시간, window 마이크로 인스턴스 750시간
+
+리전당 20개씩 소프트 리밋 있음, 요청하면 늘어남
 
 ## 사용해야 하는 이유
 효율성과 비용 절감
@@ -56,9 +58,10 @@ GPU 인스턴스 : G로 시작, 고성능의 nvdia gpu 장착, CUDA Opencl 등�
 vCpu : 가상화소프트웨어 제공되는 CPU
 
 ## 과금방식
-온디맨드 인스턴스 : 사용률에 따른 결제방식
-스팟 인스턴스 : 경매 인스턴스
-예약 인스턴스 : 선결제방식 - > 환불불가
+ondemand instance : 사용률에 따른 결제방식, 약정 없이 시간당 고정 요금 지불 가능 
+spot instance : 경매 인스턴스, flexible start and end times, EC2에 의하여 종료되면 부분적인 사용시간에 대하여 과금되지 않으나 직접 인스턴스를 삭제한 경우 인스턴스가 실행된 전체 시간에 대하여 과금됨 
+reserved instance : 선결제방식 - > 환불불가, 할인 제공(ALL, partial, No upfront fee), specific instance family not type
+dedicated hosts : not support multi tenant, 물리 ec2 serverr
 
 ## ec2 생성할 떄
 t1.micro : 반가상화 Amazon Linux AMI 선택했으면 t1만 사용가능
@@ -103,10 +106,18 @@ SuSE Linux : root
 Ubuntu Linux : ubuntu
 
 ## ec2 기타 설정 및 기능
-placement group : 물리적으로 인접한 곳에 ec2인스턴스 생성 -> 네트워크 퍼포먼스 극대화'
-bundle instance(instance store ami) : 인스턴스 스토리지를 루트장치로 사용하는 windows instance의 내용을 s3버킷에 저장하는 기능
-bundle task : bundle instance가 처리되는 과정
-network interface : ENI(Elastic network interface) 생성하고 ec2인스턴스에 장착
+- placement group :
+    - Clustered placement group: Clustering low-latency group of instances within a single AZ. 
+    - spread placement group: 물리적으로 인접한 곳에 ec2인스턴스 생성 -> 네트워크 퍼포먼스 극대화'
+- bundle instance(instance store ami) : 인스턴스 스토리지를 루트장치로 사용하는 windows instance의 내용을 s3버킷에 저장하는 기능
+- bundle task : bundle instance가 처리되는 과정
+- network interface : ENI(Elastic network interface) 생성하고 ec2인스턴스에 장착
 
 ## ec2 태그 지정
 - 참고 : https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/Using_Tags.html#tag-resources
+
+## 메타데이터
+curl http://169.254.169.254/latest/meta-data/
+curl http://169.254.169.254/latest/user-data/
+인스턴스에 대한 정보를 얻을 수 있음
+>https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/ec2-instance-metadata.html

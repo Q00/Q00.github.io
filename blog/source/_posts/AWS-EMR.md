@@ -14,7 +14,7 @@ tags:
 
 # Amazon Elastic Map Reduce (EMR)
 
-<img src='../img/aws.png'>
+<img src='https://q00.github.io/img/aws.png'>
 
 - AWS에서 제공하는 Mapreduce service
 - 오픈 소스인 AWS 하둡, apache spark, Hbase와 같은 분산 프레임워크를 활용하여 분산 처리 시스템을 실행하고, 다른 서비스들과 연동할 수 있는 서비스
@@ -32,3 +32,5 @@ tags:
 
 - Action on failure
 > 대부분의 과금 원인
+
+- allow root access
