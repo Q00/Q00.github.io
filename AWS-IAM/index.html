@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+
+    
+
+    
+    <title>AWS-IAM | Q00 blog</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="AWS,IAM">
+    
+    <meta name="description" content="IAM (Identity and Access Management) 식별 및 접근관리 aws 의 각 리소스에대해 접근제어와 권한관리 제공리소스가아닌 옵션이므로 따로 사용요금은 존재하지 않음  권한받은 유저만 접근가능  EC2 인스턴스에서 APi로 AWS 리소스에 접근하려면 항상 액세스키, 시크릿키를 설정해야만함  auto scailing 기능으로 ec2 인스">
+<meta name="keywords" content="AWS,IAM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AWS-IAM">
+<meta property="og:url" content="http://Q00.github.io/AWS-IAM/index.html">
+<meta property="og:site_name" content="Q00 blog">
+<meta property="og:description" content="IAM (Identity and Access Management) 식별 및 접근관리 aws 의 각 리소스에대해 접근제어와 권한관리 제공리소스가아닌 옵션이므로 따로 사용요금은 존재하지 않음  권한받은 유저만 접근가능  EC2 인스턴스에서 APi로 AWS 리소스에 접근하려면 항상 액세스키, 시크릿키를 설정해야만함  auto scailing 기능으로 ec2 인스">
+<meta property="og:locale" content="ko">
+<meta property="og:image" content="https://q00.github.io/img/aws.png">
+<meta property="og:updated_time" content="2018-10-29T12:17:58.903Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AWS-IAM">
+<meta name="twitter:description" content="IAM (Identity and Access Management) 식별 및 접근관리 aws 의 각 리소스에대해 접근제어와 권한관리 제공리소스가아닌 옵션이므로 따로 사용요금은 존재하지 않음  권한받은 유저만 접근가능  EC2 인스턴스에서 APi로 AWS 리소스에 접근하려면 항상 액세스키, 시크릿키를 설정해야만함  auto scailing 기능으로 ec2 인스">
+<meta name="twitter:image" content="https://q00.github.io/img/aws.png">
+    
+
+    
+        <link rel="alternate" href="/" title="Q00 blog" type="application/atom+xml">
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/3.3.1/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+</html>
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item">
+                                    <a class="main-nav-list-link" href="/">홈</a>
+                                </li>
+                            
+                                        
+                                    
+                                <li class="main-nav-list-item">
+                                    <a class="main-nav-list-link" href="/about/index.html">About</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="검색">
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something...">
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '포스트',
+            PAGES: 'Pages',
+            CATEGORIES: '카테고리',
+            TAGS: '태그',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    미지정
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-AWS-IAM" class="article article-single article-type-post" itemscope="" itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        AWS-IAM
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/AWS-IAM/" class="article-date">
+            <time datetime="2018-07-18T14:39:50.000Z" itemprop="datePublished">2018-07-18</time>
+        </a>
+    </div>
+
+		
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/AWS/">AWS</a>, <a class="tag-link" href="/tags/IAM/">IAM</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <h1 id="IAM-Identity-and-Access-Management"><a href="#IAM-Identity-and-Access-Management" class="headerlink" title="IAM (Identity and Access Management)"></a>IAM (Identity and Access Management)</h1><p><img src="https://q00.github.io/img/aws.png"></p>
+<p>식별 및 접근관리</p>
+<p>aws 의 각 리소스에대해 접근제어와 권한관리 제공<br>리소스가아닌 옵션이므로 따로 사용요금은 존재하지 않음</p>
+<ul>
+<li><p>권한받은 유저만 접근가능</p>
+</li>
+<li><p>EC2 인스턴스에서 APi로 AWS 리소스에 접근하려면 항상 액세스키, 시크릿키를 설정해야만함</p>
+</li>
+<li><p>auto scailing 기능으로 ec2 인스턴스를 자동으로 늘려나갈때 IAM 역할을 사용하면 ec2인스턴스 생성 즉시 API로 aws리소스에 접근가능</p>
+</li>
+<li><p>모든 리전에서 사용가능함 </p>
+</li>
+<li><p>IAM rule을 지정하면 <b>인스턴스 생성</b>시 rule을 지정해줄 수 잇음, IAM rule삭제시 인스턴스에서 aws리소스로 접근하는 권한이 사라짐 주의</p>
+</li>
+<li><p>사용자는 IAM rule 한개에만 적용받을 수 있음</p>
+</li>
+<li><p>Power User 는 IAM에 있는 그룹과 유저관리를 제외한 모든 AWS서비스에 접근할 수 있다.</p>
+</li>
+<li><p>IAM group은 사용자 당 열개의 그룹에 속할 수 있음</p>
+</li>
+</ul>
+<p>IAM  기능</p>
+<ul>
+<li>Centralised control of AWS account</li>
+<li>Shared Access to AWS account</li>
+<li>Granualr permmission</li>
+<li>Identity Federation(Active Directory, 등등)</li>
+<li>allows to set up own password rotation policy</li>
+<li>pci dss support</li>
+</ul>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="http://Q00.github.io/AWS-IAM/" data-id="cjnu9v8k20010knul5hcyyuas" class="article-share-link"><i class="fa fa-share"></i>공유하기</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>팔로우:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="twitter" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-twitter"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="google-plus" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-google-plus"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/Q00" target="_blank" rel="noopener">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="weibo" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-weibo"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/AWS-OpsWork/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">새로운</strong>
+        <p class="article-nav-title">
+        
+            AWS-OpsWork
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/AWS-ELB/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">오래된</strong>
+        <p class="article-nav-title">AWS-ELB</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">최근 글</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/AWS-Cognito/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://d1.awsstatic.com/products/Cognito/SmashingIdeasAssets/02_content_images/Cognito-SI-CI-IMG_landing_userpool.1b1861a897deaf6f1c82b07edcf6634c46ad268e.png)" alt="AWS-Cognito" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/AWS-Cognito/" class="title">AWS-Cognito</a></p>
+                            <p class="item-date"><time datetime="2018-10-29T05:18:54.000Z" itemprop="datePublished">2018-10-29</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/serverless-framework/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/serverless-framework/" class="title">serverless-framework</a></p>
+                            <p class="item-date"><time datetime="2018-10-23T14:33:27.000Z" itemprop="datePublished">2018-10-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/AWS-root-privileges-provided-sercice/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://q00.github.io/img/aws.png)" alt="AWS-root privileges provided sercice" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/AWS-root-privileges-provided-sercice/" class="title">AWS-root privileges provided sercice</a></p>
+                            <p class="item-date"><time datetime="2018-08-07T14:33:51.000Z" itemprop="datePublished">2018-08-07</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/AWS-Responsibility-model/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://q00.github.io/img/aws.png)" alt="AWS-Responsibility_model" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/AWS-Responsibility-model/" class="title">AWS-Responsibility_model</a></p>
+                            <p class="item-date"><time datetime="2018-08-04T11:28:59.000Z" itemprop="datePublished">2018-08-04</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/AWS-SNS/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/AWS_Simple_Icons_Messaging_Amazon_SNS.svg/480px-AWS_Simple_Icons_Messaging_Amazon_SNS.svg.png)" alt="AWS-SNS" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/AWS-SNS/" class="title">AWS-SNS</a></p>
+                            <p class="item-date"><time datetime="2018-08-03T16:25:02.000Z" itemprop="datePublished">2018-08-04</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">아카이브</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">10월 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">8월 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">7월 2018</a><span class="archive-list-count">19</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">태그</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACL/">ACL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AMI/">AMI</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AWS/">AWS</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CloudFront/">CloudFront</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CloudTrail/">CloudTrail</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CloudWatch/">CloudWatch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cognito/">Cognito</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EBS/">EBS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EC2/">EC2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EFS/">EFS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ELASTICACHE/">ELASTICACHE</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ELB/">ELB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EMR/">EMR</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ElasticBeanstalk/">ElasticBeanstalk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elastic-IP/">Elastic_IP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IAM/">IAM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/KEY-PAIR/">KEY-PAIR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LINUX/">LINUX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lambda/">Lambda</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MapReduce/">MapReduce</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Network-Access-List/">Network_Access_List</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpsWork/">OpsWork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Opswork/">Opswork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Placement-Group/">Placement_Group</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RDS/">RDS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Responsibility-model/">Responsibility_model</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Route53/">Route53</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SNS/">SNS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQS/">SQS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH-RSA/">SSH-RSA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Security-Group/">Security_Group</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VPC/">VPC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/auth/">auth</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ec2/">ec2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lambda/">lambda</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/privilege/">privilege</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/root-privilege/">root_privilege</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/serverless/">serverless</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">태그 클라우드</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/ACL/" style="font-size: 10px;">ACL</a> <a href="/tags/AMI/" style="font-size: 10px;">AMI</a> <a href="/tags/AWS/" style="font-size: 20px;">AWS</a> <a href="/tags/CloudFront/" style="font-size: 10px;">CloudFront</a> <a href="/tags/CloudTrail/" style="font-size: 10px;">CloudTrail</a> <a href="/tags/CloudWatch/" style="font-size: 10px;">CloudWatch</a> <a href="/tags/Cognito/" style="font-size: 10px;">Cognito</a> <a href="/tags/EBS/" style="font-size: 10px;">EBS</a> <a href="/tags/EC2/" style="font-size: 10px;">EC2</a> <a href="/tags/EFS/" style="font-size: 10px;">EFS</a> <a href="/tags/ELASTICACHE/" style="font-size: 10px;">ELASTICACHE</a> <a href="/tags/ELB/" style="font-size: 10px;">ELB</a> <a href="/tags/EMR/" style="font-size: 15px;">EMR</a> <a href="/tags/ElasticBeanstalk/" style="font-size: 10px;">ElasticBeanstalk</a> <a href="/tags/Elastic-IP/" style="font-size: 10px;">Elastic_IP</a> <a href="/tags/IAM/" style="font-size: 10px;">IAM</a> <a href="/tags/KEY-PAIR/" style="font-size: 10px;">KEY-PAIR</a> <a href="/tags/LINUX/" style="font-size: 10px;">LINUX</a> <a href="/tags/Lambda/" style="font-size: 10px;">Lambda</a> <a href="/tags/MapReduce/" style="font-size: 10px;">MapReduce</a> <a href="/tags/Network-Access-List/" style="font-size: 10px;">Network_Access_List</a> <a href="/tags/OpsWork/" style="font-size: 10px;">OpsWork</a> <a href="/tags/Opswork/" style="font-size: 10px;">Opswork</a> <a href="/tags/Placement-Group/" style="font-size: 10px;">Placement_Group</a> <a href="/tags/RDS/" style="font-size: 10px;">RDS</a> <a href="/tags/Responsibility-model/" style="font-size: 10px;">Responsibility_model</a> <a href="/tags/Route53/" style="font-size: 10px;">Route53</a> <a href="/tags/SNS/" style="font-size: 10px;">SNS</a> <a href="/tags/SQS/" style="font-size: 10px;">SQS</a> <a href="/tags/SSH-RSA/" style="font-size: 10px;">SSH-RSA</a> <a href="/tags/Security-Group/" style="font-size: 10px;">Security_Group</a> <a href="/tags/VPC/" style="font-size: 10px;">VPC</a> <a href="/tags/auth/" style="font-size: 10px;">auth</a> <a href="/tags/ec2/" style="font-size: 10px;">ec2</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/privilege/" style="font-size: 10px;">privilege</a> <a href="/tags/root-privilege/" style="font-size: 10px;">root_privilege</a> <a href="/tags/serverless/" style="font-size: 10px;">serverless</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">링크</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2018 Q00</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+        
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'http://Q00.github.io/AWS-IAM/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

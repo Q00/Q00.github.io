@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+
+    
+
+    
+    <title>AWS-S3 | Q00 blog</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="">
+    
+    <meta name="description" content="S3 ( Amazon Simple Storage Service) 인터넷용 스토리지 서비스. 개발자가 보다 쉽게 웹 규모 컴퓨팅 작업이 가능하도록 설계  언제 어디서나 원하는 양의 데이터를 저장하고 검색가능  S3를 써야하는 이유성능, 비용, 대용량의 파일을 ec2와 EBS를 통해 구축한다면 상당히 많은 비용이 들고 노력이 요구된다.  S3 는 저장용량이 무">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AWS-S3">
+<meta property="og:url" content="http://Q00.github.io/AWS-S3/index.html">
+<meta property="og:site_name" content="Q00 blog">
+<meta property="og:description" content="S3 ( Amazon Simple Storage Service) 인터넷용 스토리지 서비스. 개발자가 보다 쉽게 웹 규모 컴퓨팅 작업이 가능하도록 설계  언제 어디서나 원하는 양의 데이터를 저장하고 검색가능  S3를 써야하는 이유성능, 비용, 대용량의 파일을 ec2와 EBS를 통해 구축한다면 상당히 많은 비용이 들고 노력이 요구된다.  S3 는 저장용량이 무">
+<meta property="og:locale" content="ko">
+<meta property="og:image" content="https://q00.github.io/img/aws.png">
+<meta property="og:updated_time" content="2018-10-29T12:17:58.943Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AWS-S3">
+<meta name="twitter:description" content="S3 ( Amazon Simple Storage Service) 인터넷용 스토리지 서비스. 개발자가 보다 쉽게 웹 규모 컴퓨팅 작업이 가능하도록 설계  언제 어디서나 원하는 양의 데이터를 저장하고 검색가능  S3를 써야하는 이유성능, 비용, 대용량의 파일을 ec2와 EBS를 통해 구축한다면 상당히 많은 비용이 들고 노력이 요구된다.  S3 는 저장용량이 무">
+<meta name="twitter:image" content="https://q00.github.io/img/aws.png">
+    
+
+    
+        <link rel="alternate" href="/" title="Q00 blog" type="application/atom+xml">
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/3.3.1/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+</html>
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item">
+                                    <a class="main-nav-list-link" href="/">홈</a>
+                                </li>
+                            
+                                        
+                                    
+                                <li class="main-nav-list-item">
+                                    <a class="main-nav-list-link" href="/about/index.html">About</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="검색">
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something...">
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '포스트',
+            PAGES: 'Pages',
+            CATEGORIES: '카테고리',
+            TAGS: '태그',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    미지정
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-AWS-S3" class="article article-single article-type-post" itemscope="" itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        AWS-S3
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/AWS-S3/" class="article-date">
+            <time datetime="2018-07-15T08:32:01.000Z" itemprop="datePublished">2018-07-15</time>
+        </a>
+    </div>
+
+		
+
+                
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <h1 id="S3-Amazon-Simple-Storage-Service"><a href="#S3-Amazon-Simple-Storage-Service" class="headerlink" title="S3 ( Amazon Simple Storage Service)"></a>S3 ( Amazon Simple Storage Service)</h1><p><img src="https://q00.github.io/img/aws.png"></p>
+<p>인터넷용 스토리지 서비스. 개발자가 보다 쉽게 웹 규모 컴퓨팅 작업이 가능하도록 설계</p>
+<blockquote>
+<p>언제 어디서나 원하는 양의 데이터를 저장하고 검색가능</p>
+</blockquote>
+<h2 id="S3를-써야하는-이유"><a href="#S3를-써야하는-이유" class="headerlink" title="S3를 써야하는 이유"></a>S3를 써야하는 이유</h2><p>성능, 비용, 대용량의 파일을 ec2와 EBS를 통해 구축한다면 상당히 많은 비용이 들고 노력이 요구된다.</p>
+<blockquote>
+<p>S3 는 저장용량이 무한대, 파일 저장에 최적화, 비용도 저렴</p>
+</blockquote>
+<blockquote>
+<p>S3 자체가 수천대의 웹서버로 구성, 자동 횡적확장(auto scailing) 부한분산 (load balancing) 신경쓰지 않아도 된다.</p>
+</blockquote>
+<p>S3 url(endpoint) 를 dns 서버에 cname으로 설정하여 정적 웹페이지 index로 접속할 수 있게 해준다.</p>
+<blockquote>
+<p>동적웹페이지(asp, jsp, php..)와 정적 웹페이지가 섞여 있다면 동적 웹페이지만 ec2에서 서비스, 정적 웹페이지는 S3 이용하면 성능 높일 수 있다.</p>
+</blockquote>
+<h2 id="S3-기본-개념"><a href="#S3-기본-개념" class="headerlink" title="S3 기본 개념"></a>S3 기본 개념</h2><p><a href="https://s3-regionName.amazonaws.com/s3Name" target="_blank" rel="noopener">https://s3-regionName.amazonaws.com/s3Name</a><br>bucket : 파일 저장</p>
+<blockquote>
+<p>bucket ACL은 IAM user에만 해당됨<br>object : S3에 데이터가 저장되는 최소단위, 파일과 메타데이터로 구성, <b>key-value로 구성</b><br>Object based storage로 NO Transactional database임<br>메타 데이터는 http content type 형식 (MIME) 파일의 확장자에 따라 자동으로 설정되며 임의로 설정할 수도 있음<br>객체의 개수는 제한 없으나 객체 하나당 용량은 5TB로 제한. (Each object can contain up to 5 TB of data)</p>
+</blockquote>
+<p>S3 API에는 초당 요청에 제한이 있음( 100 PUT/LIST/DELETE or 300 GET )</p>
+<blockquote>
+<p>anticipate over 100 request per second, add a random prefix to the key names(should avoid sequential key name) =&gt; 무작위성을 부여해야 여러 파티션으로 나뉘어 작업가능해짐</p>
+</blockquote>
+<ul>
+<li>protect data from accidential deletion<blockquote>
+<p>versioning S3:  Amazon S3 버킷에 저장된 모든 버전의 모든 객체를 보존, 검색 및 복원가능. 또한 의도치 않은 사용자 작업 및 애플리케이션 장애로부터 쉽게 복구<br>버킷 버전관리(bucket versionig)를 통해 S3 lifecycle policy 관리 가능<br>enable Multi-factor authentication(MFA)</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="헤더설정"><a href="#헤더설정" class="headerlink" title="헤더설정"></a>헤더설정</h3><ul>
+<li>cached control : 브라우저 캐시정책설정, 만기시간 설정</li>
+<li>content disposition : value에 attachment로 설정하면 바로 파일 다운로드 할 수 있게함</li>
+<li>content type : 웹 브라우저에서 파일을 어떻게 처리해야하는지 알려주는 메타데이터</li>
+</ul>
+<h2 id="S3-Storage-Tiers"><a href="#S3-Storage-Tiers" class="headerlink" title="S3 Storage Tiers"></a>S3 Storage Tiers</h2><ul>
+<li>S3 standard : 99.99% 가용성, 99.999999999% 내구성</li>
+<li>S3 IA : Infrequenly Access -&gt; 잘접근안하지만 glacier와는 다르게 빠른 접근속도, S3보다 싸나 검색비용이 부과됨 - durability : 99.999999999%</li>
+<li>S3 One Zone IA : IA 중에서 multiple Availibility Zone이 요구되지 않는 것(장애 대처안함)</li>
+<li>Glacier : 엄청 싸고 보관용, 데이터를 검색하고 가져오는 시간이 매우김. - nativley encrypt</li>
+</ul>
+<ul>
+<li>RRS : Reduced Redundancy Stoage<br>availablity : 99.99 % durability : 99.99%</li>
+</ul>
+<h2 id="S3-데이터-일관성-모델"><a href="#S3-데이터-일관성-모델" class="headerlink" title="S3 데이터 일관성 모델"></a>S3 데이터 일관성 모델</h2><ul>
+<li>S3는 읽기 후 쓰기 일관성 제공함(Read-after-write consistency for a type of PUT) -&gt; PUTS of new object</li>
+<li>단일 키에 대한 업데이트는 원자성에 바탕을 둠 (Atomic) -&gt;&gt; 최종 일관성(eventual consistency) -&gt; overwrite PUTS and DELETES</li>
+<li>S3에서는 Amaon 여러 서버로 데이터 복제 -&gt; 고가용성 구현 </li>
+<li>변경사항 발생시 변경사항이 완전히 전파될 때 까지 기존의 데이터를 사용할 수 있음(can take some time to propagate)</li>
+</ul>
+<h2 id="S3-encryption"><a href="#S3-encryption" class="headerlink" title="S3 encryption"></a>S3 encryption</h2><p>Server Side Encryption (SSE)-S3, SSE-C, SSE-KMS</p>
+<h3 id="S3-멀티파트-업로드"><a href="#S3-멀티파트-업로드" class="headerlink" title="S3 멀티파트 업로드"></a>S3 멀티파트 업로드</h3><p>resume on failure, and restart<br>대형 객체를 여러 개로 나누어 업로드 가능 - 용량 큰 파일 실패할때</p>
+<blockquote>
+<p><a href="https://docs.aws.amazon.com/ko_kr/AmazonS3/latest/dev/uploadobjusingmpu.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/ko_kr/AmazonS3/latest/dev/uploadobjusingmpu.html</a></p>
+</blockquote>
+<h3 id="CloudTrail-amp-Server-access-logging"><a href="#CloudTrail-amp-Server-access-logging" class="headerlink" title="CloudTrail &amp; Server access logging"></a>CloudTrail &amp; Server access logging</h3><p>CloudTrail : API traking<br>Server access logging : visibility into object-level opration</p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="http://Q00.github.io/AWS-S3/" data-id="cjnu9v8kh001iknul4jqcqicb" class="article-share-link"><i class="fa fa-share"></i>공유하기</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>팔로우:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="twitter" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-twitter"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="google-plus" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-google-plus"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/Q00" target="_blank" rel="noopener">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="weibo" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-weibo"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/AWS-EMR/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">새로운</strong>
+        <p class="article-nav-title">
+        
+            AWS-EMR
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/AWS-key-pair-위치/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">오래된</strong>
+        <p class="article-nav-title">AWS-key-pair-위치</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">최근 글</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/AWS-Cognito/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://d1.awsstatic.com/products/Cognito/SmashingIdeasAssets/02_content_images/Cognito-SI-CI-IMG_landing_userpool.1b1861a897deaf6f1c82b07edcf6634c46ad268e.png)" alt="AWS-Cognito" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/AWS-Cognito/" class="title">AWS-Cognito</a></p>
+                            <p class="item-date"><time datetime="2018-10-29T05:18:54.000Z" itemprop="datePublished">2018-10-29</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/serverless-framework/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/serverless-framework/" class="title">serverless-framework</a></p>
+                            <p class="item-date"><time datetime="2018-10-23T14:33:27.000Z" itemprop="datePublished">2018-10-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/AWS-root-privileges-provided-sercice/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://q00.github.io/img/aws.png)" alt="AWS-root privileges provided sercice" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/AWS-root-privileges-provided-sercice/" class="title">AWS-root privileges provided sercice</a></p>
+                            <p class="item-date"><time datetime="2018-08-07T14:33:51.000Z" itemprop="datePublished">2018-08-07</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/AWS-Responsibility-model/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://q00.github.io/img/aws.png)" alt="AWS-Responsibility_model" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/AWS-Responsibility-model/" class="title">AWS-Responsibility_model</a></p>
+                            <p class="item-date"><time datetime="2018-08-04T11:28:59.000Z" itemprop="datePublished">2018-08-04</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/AWS-SNS/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/AWS_Simple_Icons_Messaging_Amazon_SNS.svg/480px-AWS_Simple_Icons_Messaging_Amazon_SNS.svg.png)" alt="AWS-SNS" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/AWS-SNS/" class="title">AWS-SNS</a></p>
+                            <p class="item-date"><time datetime="2018-08-03T16:25:02.000Z" itemprop="datePublished">2018-08-04</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">아카이브</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">10월 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">8월 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">7월 2018</a><span class="archive-list-count">19</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">태그</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACL/">ACL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AMI/">AMI</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AWS/">AWS</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CloudFront/">CloudFront</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CloudTrail/">CloudTrail</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CloudWatch/">CloudWatch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cognito/">Cognito</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EBS/">EBS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EC2/">EC2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EFS/">EFS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ELASTICACHE/">ELASTICACHE</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ELB/">ELB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EMR/">EMR</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ElasticBeanstalk/">ElasticBeanstalk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elastic-IP/">Elastic_IP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IAM/">IAM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/KEY-PAIR/">KEY-PAIR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LINUX/">LINUX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lambda/">Lambda</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MapReduce/">MapReduce</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Network-Access-List/">Network_Access_List</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpsWork/">OpsWork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Opswork/">Opswork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Placement-Group/">Placement_Group</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RDS/">RDS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Responsibility-model/">Responsibility_model</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Route53/">Route53</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SNS/">SNS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQS/">SQS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH-RSA/">SSH-RSA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Security-Group/">Security_Group</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VPC/">VPC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/auth/">auth</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ec2/">ec2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lambda/">lambda</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/privilege/">privilege</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/root-privilege/">root_privilege</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/serverless/">serverless</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">태그 클라우드</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/ACL/" style="font-size: 10px;">ACL</a> <a href="/tags/AMI/" style="font-size: 10px;">AMI</a> <a href="/tags/AWS/" style="font-size: 20px;">AWS</a> <a href="/tags/CloudFront/" style="font-size: 10px;">CloudFront</a> <a href="/tags/CloudTrail/" style="font-size: 10px;">CloudTrail</a> <a href="/tags/CloudWatch/" style="font-size: 10px;">CloudWatch</a> <a href="/tags/Cognito/" style="font-size: 10px;">Cognito</a> <a href="/tags/EBS/" style="font-size: 10px;">EBS</a> <a href="/tags/EC2/" style="font-size: 10px;">EC2</a> <a href="/tags/EFS/" style="font-size: 10px;">EFS</a> <a href="/tags/ELASTICACHE/" style="font-size: 10px;">ELASTICACHE</a> <a href="/tags/ELB/" style="font-size: 10px;">ELB</a> <a href="/tags/EMR/" style="font-size: 15px;">EMR</a> <a href="/tags/ElasticBeanstalk/" style="font-size: 10px;">ElasticBeanstalk</a> <a href="/tags/Elastic-IP/" style="font-size: 10px;">Elastic_IP</a> <a href="/tags/IAM/" style="font-size: 10px;">IAM</a> <a href="/tags/KEY-PAIR/" style="font-size: 10px;">KEY-PAIR</a> <a href="/tags/LINUX/" style="font-size: 10px;">LINUX</a> <a href="/tags/Lambda/" style="font-size: 10px;">Lambda</a> <a href="/tags/MapReduce/" style="font-size: 10px;">MapReduce</a> <a href="/tags/Network-Access-List/" style="font-size: 10px;">Network_Access_List</a> <a href="/tags/OpsWork/" style="font-size: 10px;">OpsWork</a> <a href="/tags/Opswork/" style="font-size: 10px;">Opswork</a> <a href="/tags/Placement-Group/" style="font-size: 10px;">Placement_Group</a> <a href="/tags/RDS/" style="font-size: 10px;">RDS</a> <a href="/tags/Responsibility-model/" style="font-size: 10px;">Responsibility_model</a> <a href="/tags/Route53/" style="font-size: 10px;">Route53</a> <a href="/tags/SNS/" style="font-size: 10px;">SNS</a> <a href="/tags/SQS/" style="font-size: 10px;">SQS</a> <a href="/tags/SSH-RSA/" style="font-size: 10px;">SSH-RSA</a> <a href="/tags/Security-Group/" style="font-size: 10px;">Security_Group</a> <a href="/tags/VPC/" style="font-size: 10px;">VPC</a> <a href="/tags/auth/" style="font-size: 10px;">auth</a> <a href="/tags/ec2/" style="font-size: 10px;">ec2</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/privilege/" style="font-size: 10px;">privilege</a> <a href="/tags/root-privilege/" style="font-size: 10px;">root_privilege</a> <a href="/tags/serverless/" style="font-size: 10px;">serverless</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">링크</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2018 Q00</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+        
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'http://Q00.github.io/AWS-S3/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
