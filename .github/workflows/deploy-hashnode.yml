@@ -1,0 +1,108 @@
+name: Deploy Blog with Hashnode Integration
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  # Manual trigger for republishing
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build packages
+        run: pnpm build:packages
+
+      - name: Run tests
+        run: pnpm test
+
+      - name: Type check
+        run: pnpm type-check
+
+      # - name: Lint
+      #   run: pnpm lint
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build shared packages
+        run: pnpm build:packages
+
+      # Build blog with Hashnode integration (read-only mode)
+      - name: Build blog for production
+        run: pnpm build:blog
+        env:
+          NODE_ENV: production
+          # Site configuration
+          VITE_SITE_URL: https://${{ github.repository_owner }}.github.io
+          VITE_SITE_TITLE: "When Pressure Turns into Inspiration"
+          VITE_SITE_DESCRIPTION: "When Pressure Turns into Inspiration"
+          VITE_AUTHOR_NAME: "JQ"
+          VITE_AUTHOR_EMAIL: "jqyu.lee@gmail.com"
+          VITE_POSTS_PER_PAGE: 10
+          VITE_FEATURED_POSTS_COUNT: 3
+
+          # Hashnode configuration (READ-ONLY)
+          VITE_HASHNODE_ENABLED: true
+          VITE_HASHNODE_PUBLICATION_ID: ${{ secrets.HASHNODE_PUBLICATION_ID }}
+          VITE_HASHNODE_PUBLICATION_HOST: ${{ secrets.HASHNODE_PUBLICATION_HOST }}
+          # Note: NO API TOKEN - read-only mode only
+          VITE_GITHUB_CLIENT_ID: ""
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./apps/blog/dist
+          # cname: yourdomain.com  # 커스텀 도메인 사용 시 주석 해제
+
+  lighthouse-audit:
+    needs: deploy
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+          urls: |
+            https://${{ github.repository_owner }}.github.io
+            https://${{ github.repository_owner }}.github.io/posts
+          uploadArtifacts: true
