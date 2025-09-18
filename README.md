@@ -36,10 +36,11 @@ VITE_HASHNODE_PUBLICATION_HOST=yourblog.hashnode.dev
 Deploy to GitHub Pages automatically via GitHub Actions.
 
 **Required Repository Secrets:**
+
 - `HASHNODE_PUBLICATION_ID`
 - `HASHNODE_PUBLICATION_HOST`
 
-Push to `master` branch to trigger deployment.
+Push to `master` or `main` branch to trigger deployment.
 
 ## Tech Stack
 
