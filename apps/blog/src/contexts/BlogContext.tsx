@@ -29,6 +29,15 @@ interface BlogContextValue {
   searchPosts: (query: string) => Promise<BlogPost[]>;
   getPostsByCategory: (category: string) => Promise<BlogPost[]>;
   getPostsByTag: (tag: string) => Promise<BlogPost[]>;
+  getDraft: (draftId: string) => Promise<{
+    id: string;
+    slug: string;
+    title: string;
+    subtitle?: string;
+    content: {
+      markdown: string;
+    };
+  } | null>;
   refreshPosts: () => Promise<void>;
 }
 
@@ -141,6 +150,23 @@ export const BlogProvider = ({ children }: BlogProviderProps) => {
     }
   };
 
+  const getDraft = async (draftId: string): Promise<{
+    id: string;
+    slug: string;
+    title: string;
+    subtitle?: string;
+    content: {
+      markdown: string;
+    };
+  } | null> => {
+    try {
+      return await contentProvider.getDraft(draftId);
+    } catch (err) {
+      console.error(`Error fetching draft ${draftId}:`, err);
+      return null;
+    }
+  };
+
   const refreshPosts = async () => {
     await fetchPosts();
   };
@@ -161,6 +187,7 @@ export const BlogProvider = ({ children }: BlogProviderProps) => {
     searchPosts,
     getPostsByCategory,
     getPostsByTag,
+    getDraft,
     refreshPosts,
   };
 

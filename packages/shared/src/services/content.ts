@@ -19,6 +19,15 @@ export interface ContentProvider {
     slug: string;
     posts: BlogPost[];
   }>>;
+  getDraft(draftId: string): Promise<{
+    id: string;
+    slug: string;
+    title: string;
+    subtitle?: string;
+    content: {
+      markdown: string;
+    };
+  } | null>;
 }
 
 
@@ -236,6 +245,39 @@ export class HashnodeContentProvider implements ContentProvider {
     } catch (error) {
       console.error('Failed to fetch series:', error);
       return [];
+    }
+  }
+
+  async getDraft(draftId: string): Promise<{
+    id: string;
+    slug: string;
+    title: string;
+    subtitle?: string;
+    content: {
+      markdown: string;
+    };
+  } | null> {
+    const cacheKey = `draft-${draftId}`;
+    const cached = this.getCachedData<{
+      id: string;
+      slug: string;
+      title: string;
+      subtitle?: string;
+      content: {
+        markdown: string;
+      };
+    }>(cacheKey);
+    if (cached) return cached;
+
+    try {
+      const draft = await this.hashnodeService.getDraft(draftId);
+      if (draft) {
+        this.setCachedData(cacheKey, draft);
+      }
+      return draft;
+    } catch (error) {
+      console.error(`Failed to fetch draft ${draftId}:`, error);
+      return null;
     }
   }
 

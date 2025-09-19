@@ -394,6 +394,46 @@ export class HashnodeService {
     }
   }
 
+  async getDraft(draftId: string): Promise<{
+    id: string;
+    slug: string;
+    title: string;
+    subtitle?: string;
+    content: {
+      markdown: string;
+    };
+  } | null> {
+    const query = `
+      query Draft($id: ObjectId!) {
+        draft(id: $id) {
+          id
+          slug
+          title
+          subtitle
+          content {
+            markdown
+          }
+        }
+      }
+    `;
+
+    const data = await this.request<{
+      draft: {
+        id: string;
+        slug: string;
+        title: string;
+        subtitle?: string;
+        content: {
+          markdown: string;
+        };
+      } | null;
+    }>(query, {
+      id: draftId,
+    });
+
+    return data.draft;
+  }
+
   async getSeriesPosts(seriesSlug: string): Promise<HashnodePost[]> {
     const query = `
       query GetSeriesPosts($publicationId: ObjectId!, $seriesSlug: String!) {
