@@ -1,10 +1,21 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import { TanStackRouterVite } from '@tanstack/router-vite-plugin'
 import { rssPlugin } from './plugins/vite-rss-plugin.js'
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, '../../', 'VITE_')
+
+  return {
+    envDir: '../../', // Look for .env files in the project root
+    define: {
+      // Expose environment variables to process.env in browser
+      ...Object.keys(env).reduce((prev, key) => {
+        prev[`process.env.${key}`] = JSON.stringify(env[key])
+        return prev
+      }, {} as Record<string, string>)
+    },
   plugins: [
     react(),
     TanStackRouterVite(),
@@ -40,4 +51,5 @@ export default defineConfig({
   optimizeDeps: {
     include: ['@q00-blog/shared', '@q00-blog/ui']
   }
+}
 })

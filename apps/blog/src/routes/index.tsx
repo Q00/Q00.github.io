@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { CONFIG } from '@q00-blog/shared'
+import { ENV } from '../config/env'
 import { useBlog } from '../contexts/BlogContext'
 import { PostListItem } from '../components/blog/PostListItem'
 import { SeriesListItem } from '../components/blog/SeriesListItem'
@@ -10,24 +10,24 @@ export const Route = createFileRoute('/')({
   head: () => ({
     meta: [
       {
-        title: `${CONFIG.SITE_TITLE} - ${CONFIG.SITE_DESCRIPTION}`,
+        title: `${ENV.SITE_TITLE} - ${ENV.SITE_DESCRIPTION}`,
       },
       {
         name: 'description',
-        content: CONFIG.SITE_DESCRIPTION,
+        content: ENV.SITE_DESCRIPTION,
       },
     ],
     links: [
       {
         rel: 'alternate',
         type: 'application/rss+xml',
-        title: `${CONFIG.SITE_TITLE} RSS Feed`,
+        title: `${ENV.SITE_TITLE} RSS Feed`,
         href: '/rss/xml',
       },
       {
         rel: 'alternate',
         type: 'application/atom+xml',
-        title: `${CONFIG.SITE_TITLE} Atom Feed`,
+        title: `${ENV.SITE_TITLE} Atom Feed`,
         href: '/atom/xml',
       },
     ],
@@ -104,8 +104,8 @@ function Home() {
 
       {/* Divider */}
       {series.length > 0 && (
-        <div className="flex justify-center mb-16">
-          <div className="w-16 h-px bg-stone-200 dark:bg-stone-700"></div>
+        <div className="mb-16">
+          <div className="w-full max-w-sm h-px bg-stone-200 dark:bg-stone-700"></div>
         </div>
       )}
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from '@tanstack/react-router';
-import { CONFIG } from '@q00-blog/shared';
+import { ENV } from '../../config/env';
 import { useTheme } from '../../contexts/ThemeContext';
 
 interface HeaderProps {
@@ -54,7 +54,7 @@ export const Header = ({ className = '' }: HeaderProps) => {
               className="text-2xl font-black text-stone-900 dark:text-white
                          transition-all duration-300 tracking-tight"
             >
-              {CONFIG.SITE_TITLE}
+              {ENV.SITE_TITLE}
             </Link>
           </div>
 

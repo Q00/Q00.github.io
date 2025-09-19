@@ -302,28 +302,33 @@ export class HashnodeService {
     slug: string;
     posts: HashnodePost[];
   }>> {
+    // Updated query - Hashnode now requires first parameter for posts
     const query = `
       query GetPublicationSeries($publicationId: ObjectId!) {
         publication(id: $publicationId) {
-          series {
-            id
-            name
-            slug
-            posts {
-              edges {
-                node {
-                  id
-                  title
-                  slug
-                  brief
-                  publishedAt
-                  readTimeInMinutes
-                  views
-                  tags {
-                    name
-                  }
-                  author {
-                    name
+          seriesList {
+            edges {
+              node {
+                id
+                name
+                slug
+                posts(first: 50) {
+                  edges {
+                    node {
+                      id
+                      title
+                      slug
+                      brief
+                      publishedAt
+                      readTimeInMinutes
+                      views
+                      tags {
+                        name
+                      }
+                      author {
+                        name
+                      }
+                    }
                   }
                 }
               }
@@ -336,26 +341,30 @@ export class HashnodeService {
     try {
       const data = await this.request<{
         publication: {
-          series: Array<{
-            id: string;
-            name: string;
-            slug: string;
-            posts: {
-              edges: Array<{
-                node: HashnodePost;
-              }>;
-            };
-          }>;
+          seriesList: {
+            edges: Array<{
+              node: {
+                id: string;
+                name: string;
+                slug: string;
+                posts: {
+                  edges: Array<{
+                    node: HashnodePost;
+                  }>;
+                };
+              };
+            }>;
+          };
         };
       }>(query, {
         publicationId: this.publicationId,
       });
 
-      return data.publication.series.map(series => ({
-        id: series.id,
-        name: series.name,
-        slug: series.slug,
-        posts: series.posts.edges.map(edge => edge.node)
+      return data.publication.seriesList.edges.map(edge => ({
+        id: edge.node.id,
+        name: edge.node.name,
+        slug: edge.node.slug,
+        posts: edge.node.posts.edges.map(postEdge => postEdge.node)
       }));
     } catch (error) {
       console.error('Failed to fetch series from API, falling back to post extraction:', error);
@@ -391,7 +400,7 @@ export class HashnodeService {
       query GetSeriesPosts($publicationId: ObjectId!, $seriesSlug: String!) {
         publication(id: $publicationId) {
           series(slug: $seriesSlug) {
-            posts {
+            posts(first: 50) {
               edges {
                 node {
                   id

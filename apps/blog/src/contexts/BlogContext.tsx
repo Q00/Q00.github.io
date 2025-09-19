@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { BlogPost, getContentProvider } from '@q00-blog/shared';
+import { BlogPost, HashnodeContentProvider, HashnodeService } from '@q00-blog/shared';
+import { ENV } from '../config/env';
 
 interface BlogContextValue {
   posts: BlogPost[];
@@ -41,7 +42,22 @@ export const BlogProvider = ({ children }: BlogProviderProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const contentProvider = getContentProvider();
+  // Create content provider with unified environment variables
+  const contentProvider = (() => {
+    if (ENV.HASHNODE_ENABLED) {
+      console.log('🔧 Hashnode Config:', {
+        enabled: ENV.HASHNODE_ENABLED,
+        publicationId: ENV.HASHNODE_PUBLICATION_ID ? `Set: ${ENV.HASHNODE_PUBLICATION_ID}` : 'Missing',
+        apiToken: ENV.HASHNODE_API_TOKEN ? 'Set' : 'Missing (but optional for read-only)'
+      });
+
+      const hashnodeService = new HashnodeService(ENV.HASHNODE_PUBLICATION_ID, ENV.HASHNODE_API_TOKEN);
+      return new HashnodeContentProvider(hashnodeService);
+    }
+
+    // Fallback - you could create a different provider here
+    throw new Error('No content provider configured');
+  })();
 
   const fetchPosts = async () => {
     try {

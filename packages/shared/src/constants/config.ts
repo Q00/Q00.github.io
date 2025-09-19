@@ -1,22 +1,12 @@
 // Environment variable helper that works in both browser and Node.js
 const getEnvVar = (key: string, defaultValue: string = ''): string => {
-  // Browser environment with Vite - check if we're in an ES module context
-  try {
-    // This will only work in ES module context, will throw in CommonJS
-    if (typeof window !== 'undefined' && (globalThis as any).importMeta?.env) {
-      const metaEnv = (globalThis as any).importMeta.env;
-      const value = metaEnv[key];
-      return value || defaultValue;
-    }
-  } catch (e) {
-    // Ignore errors in CommonJS environment
-  }
-
-  // Node.js environment
+  // Node.js environment (including RSS generation scripts)
   if (typeof process !== 'undefined' && process.env) {
     return process.env[key] || defaultValue;
   }
 
+  // Browser environment fallback
+  // Note: In browser builds, Vite should expose env vars on process.env via define config
   return defaultValue;
 };
 

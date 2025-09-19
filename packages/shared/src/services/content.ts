@@ -27,8 +27,8 @@ export class HashnodeContentProvider implements ContentProvider {
   private cacheKey = STORAGE_KEYS.POSTS_CACHE;
   private cacheTimeout = 5 * 60 * 1000; // 5 minutes
 
-  constructor() {
-    this.hashnodeService = new HashnodeService(
+  constructor(hashnodeService?: HashnodeService) {
+    this.hashnodeService = hashnodeService || new HashnodeService(
       CONFIG.HASHNODE_PUBLICATION_ID,
       CONFIG.HASHNODE_API_TOKEN
     );
