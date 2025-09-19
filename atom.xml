@@ -4,8 +4,20 @@
   <link href="https://wpti.dev"/>
   <link href="https://wpti.dev/atom.xml" rel="self"/>
   <id>https://wpti.dev</id>
-  <updated>2025-09-19T04:53:42.666Z</updated>
+  <updated>2025-09-19T04:53:52.685Z</updated>
   <subtitle><![CDATA[When Pressure Turns into Inspiration]]></subtitle>
   <generator>Q00 Blog Atom Generator</generator>
   <author><name>JQ</name></author>
+    <entry>
+      <title type="html"><![CDATA[Init my blog]]></title>
+      <link href="https://wpti.dev/posts/init-my-blog"/>
+      <id>https://wpti.dev/posts/init-my-blog</id>
+      <published>2025-09-17T14:49:39.753Z</published>
+      <updated>2025-09-17T14:49:39.753Z</updated>
+      <author><name>Jae Gyu Lee</name></author>
+      <content type="html"><![CDATA[Sometimes stress isn’t just a weight — it’s a spark. This blog explores how moments of tension, pressure, and frustration can unexpectedly lead to fresh ideas and creative breakthroughs....]]></content>
+      <category term="first post"/>
+      <category term="first post"/>
+      <category term="en"/>
+    </entry>
 </feed>
