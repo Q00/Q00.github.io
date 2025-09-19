@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title><![CDATA[When Pressure Turns into Inspiration]]></title>
-  <link href="http://localhost:5175"/>
-  <link href="http://localhost:5175/atom.xml" rel="self"/>
-  <id>http://localhost:5175</id>
-  <updated>2024-09-18T04:47:00Z</updated>
+  <link href="https://wpti.dev"/>
+  <link href="https://wpti.dev/atom.xml" rel="self"/>
+  <id>https://wpti.dev</id>
+  <updated>2025-09-19T02:49:07.233Z</updated>
   <subtitle><![CDATA[When Pressure Turns into Inspiration]]></subtitle>
   <generator>Q00 Blog Atom Generator</generator>
   <author><name>JQ</name></author>
-
-  <!-- Posts will be loaded from HashNode API during build -->
-  <entry>
-    <title type="html"><![CDATA[RSS Feed Test]]></title>
-    <link href="http://localhost:5175/posts/rss-test"/>
-    <id>http://localhost:5175/posts/rss-test</id>
-    <published>2024-09-18T04:47:00Z</published>
-    <updated>2024-09-18T04:47:00Z</updated>
-    <author><name>JQ</name></author>
-    <content type="html"><![CDATA[Atom feed is now working! Posts will be loaded from HashNode API.]]></content>
-  </entry>
+    <entry>
+      <title type="html"><![CDATA[Init my blog]]></title>
+      <link href="https://wpti.dev/posts/init-my-blog"/>
+      <id>https://wpti.dev/posts/init-my-blog</id>
+      <published>2025-09-17T14:49:39.753Z</published>
+      <updated>2025-09-17T14:49:39.753Z</updated>
+      <author><name>Jae Gyu Lee</name></author>
+      <content type="html"><![CDATA[Sometimes stress isn’t just a weight — it’s a spark. This blog explores how moments of tension, pressure, and frustration can unexpectedly lead to fresh ideas and creative breakthroughs....]]></content>
+      <category term="first post"/>
+      <category term="first post"/>
+      <category term="en"/>
+    </entry>
 </feed>
