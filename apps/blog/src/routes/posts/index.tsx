@@ -52,11 +52,11 @@ function PostsPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <header className="mb-8">
-        <div className="flex items-center gap-4 mb-4">
+        <div className="flex flex-col gap-4 mb-4">
           <h1 className="text-3xl font-bold text-stone-900 dark:text-white">
             All Posts
           </h1>
-          <div className="flex items-center gap-4 text-sm">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 text-sm">
             <div className="flex items-center gap-2">
               {(['all', 'recent', 'popular'] as const).map((filter) => (
                 <button
@@ -72,7 +72,7 @@ function PostsPage() {
                 </button>
               ))}
             </div>
-            <div className="w-px h-4 bg-stone-300 dark:bg-stone-600"></div>
+            <div className="hidden sm:block w-px h-4 bg-stone-300 dark:bg-stone-600"></div>
             <div className="flex items-center gap-2">
               {(['all', 'ko', 'en'] as const).map((language) => (
                 <button

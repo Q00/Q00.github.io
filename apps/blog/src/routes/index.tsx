@@ -64,7 +64,7 @@ function Home() {
     <div className="container mx-auto px-4 py-12">
       {/* Recent Posts Section */}
       <section className="mb-16">
-        <div className="flex items-center justify-between mb-12">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-12">
           <div>
             <h2 className="text-3xl font-bold text-stone-900 dark:text-white mb-4 tracking-tight">
               Recent Posts
@@ -75,11 +75,13 @@ function Home() {
           </div>
           <Link
             to="/posts"
-            className="inline-flex items-center px-6 py-3 text-sm font-semibold text-stone-700 dark:text-stone-300
+            className="inline-flex items-center justify-center px-4 py-2 sm:px-6 sm:py-3 text-sm font-semibold text-stone-700 dark:text-stone-300
                        bg-stone-100 dark:bg-stone-800 rounded-xl transition-all duration-300
-                       border border-stone-200 dark:border-stone-700"
+                       border border-stone-200 dark:border-stone-700 hover:bg-stone-200 dark:hover:bg-stone-700
+                       self-start sm:self-auto"
           >
-            View all posts
+            <span className="sm:hidden">All posts</span>
+            <span className="hidden sm:inline">View all posts</span>
             <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
