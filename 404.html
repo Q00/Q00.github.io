@@ -6,45 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>WPTI</title>
     <meta name="description" content="When Pressure Turns into Inspiration" />
-    
+
     <!-- SEO Meta Tags -->
     <meta property="og:title" content="WPTI" />
     <meta property="og:description" content="When Pressure Turns into Inspiration" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://wpti.dev" />
     <meta property="og:image" content="https://wpti.dev/images/og-default.png" />
-    
+
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="WPTI" />
     <meta name="twitter:description" content="When Pressure Turns into Inspiration" />
     <meta name="twitter:image" content="https://wpti.dev/images/og-default.png" />
-    
+
     <!-- RSS Feed -->
     <link rel="alternate" type="application/rss+xml" title="WPTI RSS" href="/feed.xml" />
-    
+
     <!-- Theme Color -->
     <meta name="theme-color" content="#ffffff" />
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
-    <script type="module" crossorigin src="/assets/index-rSiSEDLl.js"></script>
-    <link rel="modulepreload" crossorigin href="/assets/vendor-DJ1oPbzn.js">
-    <link rel="modulepreload" crossorigin href="/assets/router-7gUgj2vl.js">
-    <link rel="modulepreload" crossorigin href="/assets/markdown-C4kxcfZC.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-CFQbCMBU.css">
+
   </head>
   <body>
     <div id="root"></div>
-
-    <!-- GitHub Pages SPA redirect handler -->
-    <script>
-      // Handle redirect from 404.html
-      (function() {
-        var redirect = sessionStorage.redirect;
-        delete sessionStorage.redirect;
-        if (redirect && redirect !== location.href) {
-          history.replaceState(null, null, redirect);
-        }
-      })();
-    </script>
-
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
