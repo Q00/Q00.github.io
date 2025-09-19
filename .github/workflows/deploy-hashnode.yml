@@ -91,7 +91,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./apps/blog/dist
-          # cname: yourdomain.com  # 커스텀 도메인 사용 시 주석 해제
+          cname: wpti.dev
 
   # lighthouse-audit:
   #   needs: deploy
