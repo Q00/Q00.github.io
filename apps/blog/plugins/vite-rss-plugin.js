@@ -34,8 +34,11 @@ export function rssPlugin() {
           posts = [];
         } else {
           console.log('✅ Hashnode configuration found, fetching posts...');
-          const contentProvider = createContentProvider();
-          posts = await contentProvider.getPosts(50);
+          const contentProvider = createContentProvider({
+            publicationId: hashnodeId,
+            apiToken: process.env.VITE_HASHNODE_API_TOKEN
+          });
+          posts = await contentProvider.getPosts(20);
         }
 
         if (posts.length === 0) {

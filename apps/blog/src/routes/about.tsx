@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { getContentProvider } from '@q00-blog/shared'
+import { createContentProvider } from '@q00-blog/shared'
 import { ENV } from '@/config/env'
 import { useEffect, useState } from 'react'
 
@@ -14,7 +14,10 @@ function AboutPage() {
   useEffect(() => {
     async function loadAboutInfo() {
       try {
-        const contentProvider = getContentProvider()
+        const contentProvider = createContentProvider({
+          publicationId: ENV.HASHNODE_PUBLICATION_ID,
+          apiToken: ENV.HASHNODE_API_TOKEN
+        })
         const metadata = await contentProvider.getMetadata()
 
         // Use Hashnode publication info

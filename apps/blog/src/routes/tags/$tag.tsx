@@ -1,10 +1,14 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { getContentProvider } from '@q00-blog/shared'
+import { createContentProvider } from '@q00-blog/shared'
 import { PostList } from '@/components/blog/PostList'
+import { ENV } from '@/config/env'
 
 export const Route = createFileRoute('/tags/$tag')({
   loader: async ({ params }) => {
-    const contentProvider = getContentProvider()
+    const contentProvider = createContentProvider({
+      publicationId: ENV.HASHNODE_PUBLICATION_ID,
+      apiToken: ENV.HASHNODE_API_TOKEN
+    })
     const posts = await contentProvider.getPostsByTag(params.tag)
     return {
       posts,

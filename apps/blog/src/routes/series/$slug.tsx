@@ -1,10 +1,14 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { getContentProvider } from '@q00-blog/shared'
+import { createContentProvider } from '@q00-blog/shared'
 import { BookshelfList } from '@/components/blog/BookshelfList'
+import { ENV } from '@/config/env'
 
 export const Route = createFileRoute('/series/$slug')({
   loader: async ({ params }) => {
-    const contentProvider = getContentProvider()
+    const contentProvider = createContentProvider({
+      publicationId: ENV.HASHNODE_PUBLICATION_ID,
+      apiToken: ENV.HASHNODE_API_TOKEN
+    })
     const posts = await contentProvider.getSeriesPosts(params.slug)
     const series = await contentProvider.getSeries()
     const currentSeries = series.find(s => s.slug === params.slug)

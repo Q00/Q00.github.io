@@ -252,41 +252,16 @@ export class HashnodeContentProvider implements ContentProvider {
   }
 }
 
-export function createContentProvider(): ContentProvider {
-  // Try to create HashnodeService with available environment variables
-  let hashnodeService: HashnodeService;
-
-  // In a browser environment, try to get from globalThis (Vite defines these)
-  const getEnvVar = (key: string, fallback: string = '') => {
-    if (typeof process !== 'undefined' && process.env) {
-      return process.env[key] || fallback;
-    }
-    if (typeof globalThis !== 'undefined' && (globalThis as any).process?.env) {
-      return (globalThis as any).process.env[key] || fallback;
-    }
-    return fallback;
-  };
-
-  const publicationId = getEnvVar('VITE_HASHNODE_PUBLICATION_ID');
-  const apiToken = getEnvVar('VITE_HASHNODE_API_TOKEN');
-
-  if (!publicationId) {
-    throw new Error(`createContentProvider: VITE_HASHNODE_PUBLICATION_ID is required but not found. Available env: ${Object.keys(typeof process !== 'undefined' ? process.env || {} : {}).filter(k => k.includes('HASHNODE')).join(', ')}`);
+export function createContentProvider(config: {
+  publicationId: string;
+  apiToken?: string;
+}): ContentProvider {
+  if (!config.publicationId) {
+    throw new Error(`createContentProvider: publicationId is required but got: "${config.publicationId}"`);
   }
 
-  hashnodeService = new HashnodeService(publicationId, apiToken);
+  const hashnodeService = new HashnodeService(config.publicationId, config.apiToken);
   return new HashnodeContentProvider(hashnodeService);
 }
 
-let contentProvider: ContentProvider | null = null;
-
-export function getContentProvider(): ContentProvider {
-  if (!contentProvider) {
-    contentProvider = createContentProvider();
-  }
-  return contentProvider;
-}
-
-export function resetContentProvider(): void {
-  contentProvider = null;
-}
+// Legacy functions removed - use createContentProvider({ publicationId, apiToken }) instead

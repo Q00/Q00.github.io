@@ -1,18 +1,22 @@
 import React from 'react'
 import { createFileRoute } from '@tanstack/react-router'
-import { generatePostSEO, getContentProvider } from '@q00-blog/shared'
+import { generatePostSEO, createContentProvider } from '@q00-blog/shared'
 import { PostDetail } from '@/components/blog/PostDetail'
+import { ENV } from '@/config/env'
 
 export const Route = createFileRoute('/posts/$slug')({
   loader: async ({ params }) => {
-    const contentProvider = getContentProvider()
+    const contentProvider = createContentProvider({
+      publicationId: ENV.HASHNODE_PUBLICATION_ID,
+      apiToken: ENV.HASHNODE_API_TOKEN
+    })
     const post = await contentProvider.getPostBySlug(params.slug)
     if (!post) {
       throw new Error('Post not found')
     }
 
     // Also get all posts for navigation
-    const allPosts = await contentProvider.getPosts(50) // Hashnode API limit is 50
+    const allPosts = await contentProvider.getPosts(20) // Hashnode API limit is 20
     const currentIndex = allPosts.findIndex(p => p.slug === params.slug)
     const previousPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null
     const nextPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null
