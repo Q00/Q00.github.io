@@ -8,9 +8,8 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '../../', 'VITE_')
 
   return {
-    envDir: '../../', // Look for .env files in the project root
+    envDir: '../../',
     define: {
-      // Expose environment variables to process.env in browser
       ...Object.keys(env).reduce((prev, key) => {
         prev[`process.env.${key}`] = JSON.stringify(env[key])
         return prev

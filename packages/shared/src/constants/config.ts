@@ -43,6 +43,6 @@ export const THEMES = {
   SYSTEM: 'system',
 } as const;
 
-export const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+export const MAX_FILE_SIZE = 5 * 1024 * 1024;
 export const SUPPORTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'] as const;
-export const DEFAULT_READING_SPEED = 200; // words per minute
+export const DEFAULT_READING_SPEED = 200;

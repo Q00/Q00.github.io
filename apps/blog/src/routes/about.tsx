@@ -20,11 +20,9 @@ function AboutPage() {
         })
         const metadata = await contentProvider.getMetadata()
 
-        // Use Hashnode publication info
         setAboutContent(metadata.siteDescription)
       } catch (error) {
         console.error('Failed to load about info from Hashnode:', error)
-        // Fallback to ENV values
         setAboutContent(ENV.SITE_DESCRIPTION)
       } finally {
         setLoading(false)

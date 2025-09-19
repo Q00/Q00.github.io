@@ -302,7 +302,6 @@ export class HashnodeService {
     slug: string;
     posts: HashnodePost[];
   }>> {
-    // Updated query - Hashnode now requires first parameter for posts
     const query = `
       query GetPublicationSeries($publicationId: ObjectId!) {
         publication(id: $publicationId) {

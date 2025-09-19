@@ -30,7 +30,6 @@ export function rssPlugin() {
         if (!hashnodeEnabled || !hashnodeId || !hashnodeHost) {
           console.log('ℹ️  Hashnode integration not configured, generating empty feeds');
           console.log('   (This is normal for local builds without environment variables)');
-          // Skip API calls when environment variables are not available
           posts = [];
         } else {
           console.log('✅ Hashnode configuration found, fetching posts...');

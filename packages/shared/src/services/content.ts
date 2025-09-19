@@ -264,4 +264,3 @@ export function createContentProvider(config: {
   return new HashnodeContentProvider(hashnodeService);
 }
 
-// Legacy functions removed - use createContentProvider({ publicationId, apiToken }) instead
