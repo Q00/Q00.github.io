@@ -62,12 +62,7 @@ jobs:
       
       - name: Build shared packages
         run: pnpm build:packages
-      
-      - name: Process content
-        run: pnpm build:content
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
+
       - name: Build blog with admin
         run: pnpm build:blog
         env:
