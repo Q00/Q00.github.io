@@ -1,6 +1,16 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { BlogPost, HashnodeContentProvider, HashnodeService } from '@q00-blog/shared';
-import { ENV } from '@/config/env';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import {
+  BlogPost,
+  HashnodeContentProvider,
+  HashnodeService,
+} from "@q00-blog/shared";
+import { ENV } from "@/config/env";
 
 interface BlogContextValue {
   posts: BlogPost[];
@@ -33,30 +43,29 @@ export const BlogProvider = ({ children }: BlogProviderProps) => {
   const [featuredPosts, setFeaturedPosts] = useState<BlogPost[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [tags, setTags] = useState<string[]>([]);
-  const [series, setSeries] = useState<Array<{
-    id: string;
-    name: string;
-    slug: string;
-    posts: BlogPost[];
-  }>>([]);
+  const [series, setSeries] = useState<
+    Array<{
+      id: string;
+      name: string;
+      slug: string;
+      posts: BlogPost[];
+    }>
+  >([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   // Create content provider with unified environment variables
   const contentProvider = (() => {
     if (ENV.HASHNODE_ENABLED) {
-      console.log('🔧 Hashnode Config:', {
-        enabled: ENV.HASHNODE_ENABLED,
-        publicationId: ENV.HASHNODE_PUBLICATION_ID ? `Set: ${ENV.HASHNODE_PUBLICATION_ID}` : 'Missing',
-        apiToken: ENV.HASHNODE_API_TOKEN ? 'Set' : 'Missing (but optional for read-only)'
-      });
-
-      const hashnodeService = new HashnodeService(ENV.HASHNODE_PUBLICATION_ID, ENV.HASHNODE_API_TOKEN);
+      const hashnodeService = new HashnodeService(
+        ENV.HASHNODE_PUBLICATION_ID,
+        ENV.HASHNODE_API_TOKEN
+      );
       return new HashnodeContentProvider(hashnodeService);
     }
 
     // Fallback - you could create a different provider here
-    throw new Error('No content provider configured');
+    throw new Error("No content provider configured");
   })();
 
   const fetchPosts = async () => {
@@ -65,13 +74,14 @@ export const BlogProvider = ({ children }: BlogProviderProps) => {
       setError(null);
 
       // Fetch data using the content provider
-      const [postsData, featuredData, categoriesData, tagsData, seriesData] = await Promise.all([
-        contentProvider.getPosts(),
-        contentProvider.getFeaturedPosts(),
-        contentProvider.getCategories(),
-        contentProvider.getTags(),
-        contentProvider.getSeries(),
-      ]);
+      const [postsData, featuredData, categoriesData, tagsData, seriesData] =
+        await Promise.all([
+          contentProvider.getPosts(),
+          contentProvider.getFeaturedPosts(),
+          contentProvider.getCategories(),
+          contentProvider.getTags(),
+          contentProvider.getSeries(),
+        ]);
 
       setPosts(postsData);
       setFeaturedPosts(featuredData);
@@ -79,8 +89,8 @@ export const BlogProvider = ({ children }: BlogProviderProps) => {
       setTags(tagsData);
       setSeries(seriesData);
     } catch (err) {
-      console.error('Error fetching posts:', err);
-      setError(err instanceof Error ? err.message : 'Failed to fetch posts');
+      console.error("Error fetching posts:", err);
+      setError(err instanceof Error ? err.message : "Failed to fetch posts");
       // Set empty defaults on error
       setPosts([]);
       setFeaturedPosts([]);
@@ -105,7 +115,7 @@ export const BlogProvider = ({ children }: BlogProviderProps) => {
     try {
       return await contentProvider.searchPosts(query);
     } catch (err) {
-      console.error('Error searching posts:', err);
+      console.error("Error searching posts:", err);
       return [];
     }
   };
@@ -114,7 +124,7 @@ export const BlogProvider = ({ children }: BlogProviderProps) => {
     try {
       return await contentProvider.getPostsByCategory(category);
     } catch (err) {
-      console.error('Error fetching posts by category:', err);
+      console.error("Error fetching posts by category:", err);
       return [];
     }
   };
@@ -123,7 +133,7 @@ export const BlogProvider = ({ children }: BlogProviderProps) => {
     try {
       return await contentProvider.getPostsByTag(tag);
     } catch (err) {
-      console.error('Error fetching posts by tag:', err);
+      console.error("Error fetching posts by tag:", err);
       return [];
     }
   };
@@ -151,17 +161,13 @@ export const BlogProvider = ({ children }: BlogProviderProps) => {
     refreshPosts,
   };
 
-  return (
-    <BlogContext.Provider value={value}>
-      {children}
-    </BlogContext.Provider>
-  );
+  return <BlogContext.Provider value={value}>{children}</BlogContext.Provider>;
 };
 
 export const useBlog = () => {
   const context = useContext(BlogContext);
   if (context === undefined) {
-    throw new Error('useBlog must be used within a BlogProvider');
+    throw new Error("useBlog must be used within a BlogProvider");
   }
   return context;
 };

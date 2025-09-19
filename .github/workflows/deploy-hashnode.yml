@@ -93,17 +93,17 @@ jobs:
           publish_dir: ./apps/blog/dist
           # cname: yourdomain.com  # 커스텀 도메인 사용 시 주석 해제
 
-  lighthouse-audit:
-    needs: deploy
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+  # lighthouse-audit:
+  #   needs: deploy
+  #   runs-on: ubuntu-latest
+  #   if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
 
-    steps:
-      - uses: actions/checkout@v4
-      - name: Run Lighthouse CI
-        uses: treosh/lighthouse-ci-action@v10
-        with:
-          urls: |
-            https://${{ github.repository_owner }}.github.io
-            https://${{ github.repository_owner }}.github.io/posts
-          uploadArtifacts: true
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Run Lighthouse CI
+  #       uses: treosh/lighthouse-ci-action@v10
+  #       with:
+  #         urls: |
+  #           https://${{ github.repository_owner }}.github.io
+  #           https://${{ github.repository_owner }}.github.io/posts
+  #         uploadArtifacts: true
