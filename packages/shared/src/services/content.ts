@@ -250,6 +250,7 @@ export class HashnodeContentProvider implements ContentProvider {
         }
       });
     } catch {
+      // Ignore cache errors in localStorage
     }
   }
 }

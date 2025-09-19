@@ -17,12 +17,13 @@ function PostsPage() {
     // First apply content filter
     let passesContentFilter = true
     switch (selectedFilter) {
-      case 'recent':
+      case 'recent': {
         const oneMonthAgo = new Date()
         oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1)
         const postDate = post.publishedAt instanceof Date ? post.publishedAt : new Date(post.publishedAt)
         passesContentFilter = postDate >= oneMonthAgo
         break
+      }
       case 'popular':
         passesContentFilter = typeof post.views === 'number' && post.views > 100
         break
