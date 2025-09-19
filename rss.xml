@@ -5,12 +5,23 @@
     <link>https://wpti.dev</link>
     <description><![CDATA[When Pressure Turns into Inspiration]]></description>
     <language>en-us</language>
-    <lastBuildDate>Fri, 19 Sep 2025 05:26:37 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 19 Sep 2025 05:30:36 GMT</lastBuildDate>
     <atom:link href="https://wpti.dev/rss.xml" rel="self" type="application/rss+xml"/>
     <generator>Q00 Blog RSS Generator</generator>
     <webMaster>jqyu.lee@gmail.com (JQ)</webMaster>
     <managingEditor>jqyu.lee@gmail.com (JQ)</managingEditor>
     <copyright>Copyright 2025 JQ</copyright>
     <ttl>60</ttl>
+    <item>
+      <title><![CDATA[Init my blog]]></title>
+      <link>https://wpti.dev/posts/init-my-blog</link>
+      <guid isPermaLink="true">https://wpti.dev/posts/init-my-blog</guid>
+      <description><![CDATA[Sometimes stress isn’t just a weight — it’s a spark. This blog explores how moments of tension, pressure, and frustration can unexpectedly lead to fresh ideas and creative breakthroughs....]]></description>
+      <pubDate>Wed, 17 Sep 2025 14:49:39 GMT</pubDate>
+      <author>Jae Gyu Lee</author>
+      <category><![CDATA[first post]]></category>
+      <category><![CDATA[first post]]></category>
+      <category><![CDATA[en]]></category>
+    </item>
   </channel>
 </rss>
