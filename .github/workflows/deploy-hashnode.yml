@@ -8,6 +8,12 @@ on:
   # Manual trigger for republishing
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  actions: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -87,7 +93,7 @@ jobs:
           VITE_GITHUB_CLIENT_ID: ""
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./apps/blog/dist
@@ -97,14 +103,20 @@ jobs:
     needs: deploy
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    permissions:
+      contents: read
+      actions: read
 
     steps:
       - uses: actions/checkout@v4
+      - name: Wait for deployment
+        run: sleep 30
       - name: Run Lighthouse CI
-        uses: treosh/lighthouse-ci-action@v10
+        uses: treosh/lighthouse-ci-action@v9
         with:
           urls: |
             https://wpti.dev
             https://wpti.dev/posts
             https://wpti.dev/about
-          uploadArtifacts: true
+          uploadArtifacts: false
+          temporaryPublicStorage: true
