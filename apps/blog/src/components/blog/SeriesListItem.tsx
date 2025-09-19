@@ -16,7 +16,7 @@ export const SeriesListItem = ({ series, className = '' }: SeriesListItemProps) 
 
   return (
     <article className={`group py-6 border-b border-stone-200/60 dark:border-stone-700/60 last:border-b-0 ${className}`}>
-      <div className="flex flex-col space-y-3">
+      <div className="flex flex-col">
         {/* Series Title */}
         <h2 className="transition-colors duration-300">
           <Link
@@ -30,7 +30,7 @@ export const SeriesListItem = ({ series, className = '' }: SeriesListItemProps) 
 
         {/* Date */}
         {latestPost && (
-          <div className="flex items-center text-sm text-stone-500 dark:text-stone-400">
+          <div className="flex items-center text-sm text-stone-500 dark:text-stone-400 mt-2">
             <time
               dateTime={latestPost.publishedAt instanceof Date ? latestPost.publishedAt.toISOString() : latestPost.publishedAt}
               title={formatDate(latestPost.publishedAt)}
@@ -41,7 +41,7 @@ export const SeriesListItem = ({ series, className = '' }: SeriesListItemProps) 
         )}
 
         {/* Series Info and Latest Post */}
-        <div className="flex flex-wrap gap-2 items-center">
+        <div className="flex flex-wrap gap-2 items-center mt-3">
           <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-stone-600 dark:text-stone-400
                          bg-stone-100/80 dark:bg-stone-800/60 rounded-md
                          transition-colors duration-200">

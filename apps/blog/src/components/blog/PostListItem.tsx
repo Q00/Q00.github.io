@@ -9,7 +9,7 @@ interface PostListItemProps {
 export const PostListItem = ({ post, className = '' }: PostListItemProps) => {
   return (
     <article className={`group py-6 border-b border-stone-200/60 dark:border-stone-700/60 last:border-b-0 ${className}`}>
-      <div className="flex flex-col space-y-3">
+      <div className="flex flex-col">
         {/* Title */}
         <h2 className="transition-colors duration-300">
           <Link
@@ -22,7 +22,7 @@ export const PostListItem = ({ post, className = '' }: PostListItemProps) => {
         </h2>
 
         {/* Date and Reading Time */}
-        <div className="flex items-center text-sm text-stone-500 dark:text-stone-400 space-x-3">
+        <div className="flex items-center text-sm text-stone-500 dark:text-stone-400 space-x-3 mt-2">
           <time
             dateTime={post.publishedAt instanceof Date ? post.publishedAt.toISOString() : post.publishedAt}
             title={formatDate(post.publishedAt)}
@@ -35,7 +35,7 @@ export const PostListItem = ({ post, className = '' }: PostListItemProps) => {
 
         {/* Tags */}
         {post.tags && post.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 mt-3">
             {post.tags.slice(0, 4).map((tag) => (
               <Link
                 key={tag}
