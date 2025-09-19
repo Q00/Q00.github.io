@@ -45,6 +45,8 @@ module.exports = {
     'build',
     'node_modules',
     '.eslintrc.cjs',
-    '**/*.js' // Ignore JS files in TS project
+    '**/*.js', // Ignore JS files in TS project
+    '**/routeTree.gen.ts', // Ignore TanStack Router generated files
+    '**/*.gen.ts' // Ignore all generated TypeScript files
   ],
 }
