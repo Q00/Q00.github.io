@@ -1,5 +1,6 @@
 import { writeFileSync, mkdirSync } from "fs";
 import { join } from "path";
+import { loadEnv } from "vite";
 
 export function rssPlugin() {
   return {
@@ -9,12 +10,33 @@ export function rssPlugin() {
       try {
         console.log("🔄 Generating RSS and Atom feeds...");
 
+        // Load environment variables manually since this runs in Node.js context
+        const env = loadEnv('production', process.cwd(), '');
+
+        // Merge with process.env to ensure all variables are available
+        Object.assign(process.env, env);
+
         // Import dynamically to avoid module resolution issues
         const { createContentProvider, generateRSSFeed, generateAtomFeed } =
           await import("@q00-blog/shared");
 
-        const contentProvider = createContentProvider();
-        const posts = await contentProvider.getPosts(50);
+        // Check if Hashnode integration is properly configured
+        const hashnodeEnabled = process.env.VITE_HASHNODE_ENABLED === 'true';
+        const hashnodeId = process.env.VITE_HASHNODE_PUBLICATION_ID;
+        const hashnodeHost = process.env.VITE_HASHNODE_PUBLICATION_HOST;
+
+        let posts = [];
+
+        if (!hashnodeEnabled || !hashnodeId || !hashnodeHost) {
+          console.log('ℹ️  Hashnode integration not configured, generating empty feeds');
+          console.log('   (This is normal for local builds without environment variables)');
+          // Skip API calls when environment variables are not available
+          posts = [];
+        } else {
+          console.log('✅ Hashnode configuration found, fetching posts...');
+          const contentProvider = createContentProvider();
+          posts = await contentProvider.getPosts(50);
+        }
 
         if (posts.length === 0) {
           console.warn("️No posts found, generating empty feeds");
@@ -47,13 +69,13 @@ export function rssPlugin() {
         const fallbackRss = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title><![CDATA[When Pressure Turns into Inspiration]]></title>
-    <link>https://q00.hashnode.dev</link>
+    <title><![CDATA[WPTI]]></title>
+    <link>https://wpti.dev</link>
     <description><![CDATA[When Pressure Turns into Inspiration]]></description>
     <language>en-us</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
-    <atom:link href="https://q00.hashnode.dev/rss.xml" rel="self" type="application/rss+xml"/>
-    <generator>Q00 Blog RSS Generator</generator>
+    <atom:link href="https://wpti.dev/rss.xml" rel="self" type="application/rss+xml"/>
+    <generator>WPTI RSS Generator</generator>
     <webMaster>jqyu.lee@gmail.com (JQ)</webMaster>
     <managingEditor>jqyu.lee@gmail.com (JQ)</managingEditor>
     <copyright>Copyright ${new Date().getFullYear()} JQ</copyright>

@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 import { createRootRoute, Outlet } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import { ErrorBoundary } from '@q00-blog/ui'
@@ -13,7 +14,7 @@ export const Route = createRootRoute({
           <Layout>
             <Outlet />
           </Layout>
-          <TanStackRouterDevtools />
+          {!import.meta.env.PROD && <TanStackRouterDevtools />}
         </BlogProvider>
       </ThemeProvider>
     </ErrorBoundary>

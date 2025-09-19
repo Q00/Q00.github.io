@@ -72,7 +72,7 @@ jobs:
         run: pnpm build:blog
         env:
           NODE_ENV: production
-          VITE_SITE_URL: https://${{ github.repository_owner }}.github.io
+          VITE_SITE_URL: https://wpti.dev
           VITE_SITE_TITLE: "When Pressure Turns into Inspiration"
           VITE_SITE_DESCRIPTION: "When Pressure Turns into Inspiration"
           VITE_AUTHOR_NAME: "JQ"

@@ -32,6 +32,12 @@ export default defineConfig({
           markdown: ['marked', 'dompurify', 'prismjs']
         }
       }
+    },
+    commonjsOptions: {
+      include: [/node_modules/, /packages\/.*\/dist/]
     }
+  },
+  optimizeDeps: {
+    include: ['@q00-blog/shared', '@q00-blog/ui']
   }
 })

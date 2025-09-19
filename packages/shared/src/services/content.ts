@@ -76,6 +76,7 @@ export class HashnodeContentProvider implements ContentProvider {
       this.setCachedData(cacheKey, transformedPosts);
       return transformedPosts;
     } catch (error) {
+      console.error('Failed to fetch posts from Hashnode:', error);
       return [];
     }
   }
