@@ -57,6 +57,9 @@ export const BlogProvider = ({ children }: BlogProviderProps) => {
   // Create content provider with unified environment variables
   const contentProvider = (() => {
     if (ENV.HASHNODE_ENABLED) {
+      if (!ENV.HASHNODE_PUBLICATION_ID) {
+        throw new Error(`VITE_HASHNODE_PUBLICATION_ID is required but got: "${ENV.HASHNODE_PUBLICATION_ID}"`);
+      }
       const hashnodeService = new HashnodeService(
         ENV.HASHNODE_PUBLICATION_ID,
         ENV.HASHNODE_API_TOKEN

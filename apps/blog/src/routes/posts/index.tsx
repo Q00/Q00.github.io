@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useBlog } from '@/contexts/BlogContext'
 import { PostList } from '@/components/blog/PostList'
-import { CONFIG } from '@q00-blog/shared'
+import { ENV } from '@/config/env'
 import { useState } from 'react'
 
 export const Route = createFileRoute('/posts/')({
@@ -100,7 +100,7 @@ function PostsPage() {
       <PostList
         posts={filteredPosts}
         isLoading={isLoading}
-        postsPerPage={CONFIG.POSTS_PER_PAGE}
+        postsPerPage={ENV.POSTS_PER_PAGE}
         showFeatured={false}
       />
     </div>

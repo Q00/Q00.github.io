@@ -5,8 +5,11 @@ const getEnvVar = (key: string, defaultValue: string = ''): string => {
     return process.env[key] || defaultValue;
   }
 
-  // Browser environment fallback
-  // Note: In browser builds, Vite should expose env vars on process.env via define config
+  // Browser environment - try to access via globalThis (Vite defines these)
+  if (typeof globalThis !== 'undefined' && (globalThis as any).process?.env) {
+    return (globalThis as any).process.env[key] || defaultValue;
+  }
+
   return defaultValue;
 };
 

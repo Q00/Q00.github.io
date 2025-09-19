@@ -312,7 +312,7 @@ export class HashnodeService {
                 id
                 name
                 slug
-                posts(first: 50) {
+                posts(first: 20) {
                   edges {
                     node {
                       id
@@ -368,7 +368,7 @@ export class HashnodeService {
       }));
     } catch (error) {
       console.error('Failed to fetch series from API, falling back to post extraction:', error);
-      const { posts } = await this.getPosts(50);
+      const { posts } = await this.getPosts(20);
       const seriesMap = new Map<string, {
         id: string;
         name: string;
@@ -400,7 +400,7 @@ export class HashnodeService {
       query GetSeriesPosts($publicationId: ObjectId!, $seriesSlug: String!) {
         publication(id: $publicationId) {
           series(slug: $seriesSlug) {
-            posts(first: 50) {
+            posts(first: 20) {
               edges {
                 node {
                   id
@@ -476,7 +476,7 @@ export class HashnodeService {
       return data.publication.series.posts.edges.map(edge => edge.node);
     } catch (error) {
       console.error('Failed to fetch series posts, falling back to filtering:', error);
-      const { posts } = await this.getPosts(50);
+      const { posts } = await this.getPosts(20);
       return posts.filter(post => post.series?.slug === seriesSlug);
     }
   }

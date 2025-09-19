@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { getContentProvider, CONFIG } from '@q00-blog/shared'
+import { getContentProvider } from '@q00-blog/shared'
+import { ENV } from '@/config/env'
 import { useEffect, useState } from 'react'
 
 export const Route = createFileRoute('/about')({
@@ -16,13 +17,12 @@ function AboutPage() {
         const contentProvider = getContentProvider()
         const metadata = await contentProvider.getMetadata()
 
-        // Use HashNode publication info
+        // Use Hashnode publication info
         setAboutContent(metadata.siteDescription)
-
       } catch (error) {
-        console.error('Failed to load about info from HashNode:', error)
-        // Fallback to config values
-        setAboutContent(CONFIG.SITE_DESCRIPTION)
+        console.error('Failed to load about info from Hashnode:', error)
+        // Fallback to ENV values
+        setAboutContent(ENV.SITE_DESCRIPTION)
       } finally {
         setLoading(false)
       }
@@ -62,8 +62,8 @@ function AboutPage() {
 
           <h2>Contact</h2>
           <p>
-            You can reach out via <a href={`mailto:${CONFIG.AUTHOR_EMAIL}`}>email</a> or
-            check out the source code on <a href={`https://github.com/${CONFIG.GITHUB_REPO}`} target="_blank" rel="noopener noreferrer">GitHub</a>.
+            You can reach out via <a href={`mailto:${ENV.AUTHOR_EMAIL}`}>email</a> or
+            check out the source code on <a href={`https://github.com/${ENV.GITHUB_REPO}`} target="_blank" rel="noopener noreferrer">GitHub</a>.
           </p>
 
           <p>

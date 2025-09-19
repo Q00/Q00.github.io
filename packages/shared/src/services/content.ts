@@ -27,11 +27,8 @@ export class HashnodeContentProvider implements ContentProvider {
   private cacheKey = STORAGE_KEYS.POSTS_CACHE;
   private cacheTimeout = 5 * 60 * 1000; // 5 minutes
 
-  constructor(hashnodeService?: HashnodeService) {
-    this.hashnodeService = hashnodeService || new HashnodeService(
-      CONFIG.HASHNODE_PUBLICATION_ID,
-      CONFIG.HASHNODE_API_TOKEN
-    );
+  constructor(hashnodeService: HashnodeService) {
+    this.hashnodeService = hashnodeService;
   }
 
   private getCachedData<T>(key: string): T | null {
@@ -256,7 +253,29 @@ export class HashnodeContentProvider implements ContentProvider {
 }
 
 export function createContentProvider(): ContentProvider {
-  return new HashnodeContentProvider();
+  // Try to create HashnodeService with available environment variables
+  let hashnodeService: HashnodeService;
+
+  // In a browser environment, try to get from globalThis (Vite defines these)
+  const getEnvVar = (key: string, fallback: string = '') => {
+    if (typeof process !== 'undefined' && process.env) {
+      return process.env[key] || fallback;
+    }
+    if (typeof globalThis !== 'undefined' && (globalThis as any).process?.env) {
+      return (globalThis as any).process.env[key] || fallback;
+    }
+    return fallback;
+  };
+
+  const publicationId = getEnvVar('VITE_HASHNODE_PUBLICATION_ID');
+  const apiToken = getEnvVar('VITE_HASHNODE_API_TOKEN');
+
+  if (!publicationId) {
+    throw new Error(`createContentProvider: VITE_HASHNODE_PUBLICATION_ID is required but not found. Available env: ${Object.keys(typeof process !== 'undefined' ? process.env || {} : {}).filter(k => k.includes('HASHNODE')).join(', ')}`);
+  }
+
+  hashnodeService = new HashnodeService(publicationId, apiToken);
+  return new HashnodeContentProvider(hashnodeService);
 }
 
 let contentProvider: ContentProvider | null = null;
