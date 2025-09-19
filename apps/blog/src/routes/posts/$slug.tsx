@@ -1,7 +1,7 @@
 import React from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { generatePostSEO, getContentProvider } from '@q00-blog/shared'
-import { PostDetail } from '../../components/blog/PostDetail'
+import { PostDetail } from '@/components/blog/PostDetail'
 
 export const Route = createFileRoute('/posts/$slug')({
   loader: async ({ params }) => {

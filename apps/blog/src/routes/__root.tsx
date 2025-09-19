@@ -2,9 +2,9 @@
 import { createRootRoute, Outlet } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import { ErrorBoundary } from '@q00-blog/ui'
-import { ThemeProvider } from '../contexts/ThemeContext'
-import { BlogProvider } from '../contexts/BlogContext'
-import { Layout } from '../components/layout/Layout'
+import { ThemeProvider } from '@/contexts/ThemeContext'
+import { BlogProvider } from '@/contexts/BlogContext'
+import { Layout } from '@/components/layout/Layout'
 
 export const Route = createRootRoute({
   component: () => (

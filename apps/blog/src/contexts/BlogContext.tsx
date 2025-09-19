@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { BlogPost, HashnodeContentProvider, HashnodeService } from '@q00-blog/shared';
-import { ENV } from '../config/env';
+import { ENV } from '@/config/env';
 
 interface BlogContextValue {
   posts: BlogPost[];

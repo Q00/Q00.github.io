@@ -1,8 +1,8 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { ENV } from '../config/env'
-import { useBlog } from '../contexts/BlogContext'
-import { PostListItem } from '../components/blog/PostListItem'
-import { SeriesListItem } from '../components/blog/SeriesListItem'
+import { ENV } from '@/config/env'
+import { useBlog } from '@/contexts/BlogContext'
+import { PostListItem } from '@/components/blog/PostListItem'
+import { SeriesListItem } from '@/components/blog/SeriesListItem'
 import { LoadingSpinner } from '@q00-blog/ui'
 
 export const Route = createFileRoute('/')({

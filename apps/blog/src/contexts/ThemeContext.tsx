@@ -18,8 +18,14 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
+  // Initialize system theme synchronously to avoid flash
+  const getSystemTheme = (): 'light' | 'dark' => {
+    if (typeof window === 'undefined') return 'light';
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  };
+
   const [theme, setThemeState] = useState<Theme>('system');
-  const [systemTheme, setSystemTheme] = useState<'light' | 'dark'>('light');
+  const [systemTheme, setSystemTheme] = useState<'light' | 'dark'>(getSystemTheme);
 
   // Initialize theme from localStorage or system preference
   useEffect(() => {
@@ -56,7 +62,9 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   };
 
   const toggleTheme = () => {
-    const nextTheme = theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light';
+    // Simple binary toggle based on resolved theme for better UX
+    const currentResolved = theme === 'system' ? systemTheme : theme;
+    const nextTheme = currentResolved === 'dark' ? 'light' : 'dark';
     setTheme(nextTheme);
   };
 

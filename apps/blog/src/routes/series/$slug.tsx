@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { getContentProvider } from '@q00-blog/shared'
-import { BookshelfList } from '../../components/blog/BookshelfList'
+import { BookshelfList } from '@/components/blog/BookshelfList'
 
 export const Route = createFileRoute('/series/$slug')({
   loader: async ({ params }) => {

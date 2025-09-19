@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { getContentProvider } from '@q00-blog/shared'
-import { PostList } from '../../components/blog/PostList'
+import { PostList } from '@/components/blog/PostList'
 
 export const Route = createFileRoute('/tags/$tag')({
   loader: async ({ params }) => {

@@ -1,5 +1,5 @@
 import { useRouter } from '@tanstack/react-router';
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '@/contexts/ThemeContext';
 
 interface MinimalHeaderProps {
   className?: string;
@@ -29,7 +29,7 @@ const ThemeToggle = () => {
       onClick={toggleTheme}
       className="p-2 text-stone-500 hover:text-stone-700 dark:text-stone-400 dark:hover:text-stone-200
                  rounded-full hover:bg-stone-100 dark:hover:bg-stone-800 transition-all duration-200"
-      aria-label={`Switch to ${theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light'} mode`}
+      aria-label={`Switch to ${resolvedTheme === 'dark' ? 'light' : 'dark'} mode`}
       title={getThemeLabel()}
     >
       <span className="text-lg">{getThemeIcon()}</span>

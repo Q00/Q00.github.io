@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useBlog } from '../../contexts/BlogContext'
-import { PostList } from '../../components/blog/PostList'
+import { useBlog } from '@/contexts/BlogContext'
+import { PostList } from '@/components/blog/PostList'
 import { CONFIG } from '@q00-blog/shared'
 import { useState } from 'react'
 
