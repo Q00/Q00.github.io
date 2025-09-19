@@ -26,9 +26,14 @@
     <meta name="theme-color" content="#ffffff" />
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
 
+    <!-- GitHub Pages SPA redirect -->
+    <script>
+      // Store the current path and redirect to index.html
+      sessionStorage.redirect = location.href;
+    </script>
+    <meta http-equiv="refresh" content="0;URL='/'">
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <!-- This content won't be shown due to immediate redirect -->
   </body>
 </html>
