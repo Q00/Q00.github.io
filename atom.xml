@@ -4,10 +4,23 @@
   <link href="https://wpti.dev"/>
   <link href="https://wpti.dev/atom.xml" rel="self"/>
   <id>https://wpti.dev</id>
-  <updated>2025-09-19T08:09:13.580Z</updated>
+  <updated>2026-01-01T15:33:53.122Z</updated>
   <subtitle><![CDATA[When Pressure Turns into Inspiration]]></subtitle>
   <generator>Q00 Blog Atom Generator</generator>
   <author><name>JQ</name></author>
+    <entry>
+      <title type="html"><![CDATA[더 빠른 스포츠카를 만들 것인가? 빛이 있으라를 외칠 것인가?]]></title>
+      <link href="https://wpti.dev/posts/edutech-in-ai-era-ko"/>
+      <id>https://wpti.dev/posts/edutech-in-ai-era-ko</id>
+      <published>2026-01-01T15:18:04.346Z</published>
+      <updated>2026-01-01T15:18:04.346Z</updated>
+      <author><name>Jae Gyu Lee</name></author>
+      <content type="html"><![CDATA[온톨로지의 함정: 우리는 왜 도로위를 달려야 하는가?
+아이작 아시모프의 소설 ‘최후의 질문’에는 인류가 수조 년에 걸쳐 AI에게 “우주의 엔트로피를 역전시킬 수 있는가?”를 묻는 장면이 나온다. 모든 데이터가 모이고 우주가 끝나갈 시점 AI는 답한다. “빛이 있으라”. 그리고 새로운 우주가 탄생한다. 이것은 단순한 창조의 이야기가 아니다. AI가 기존 우주의 물리적 법칙, 한계를 최적화한게 아니라 한계 자체를 파괴하고 근본적인 문제를 해결했음을......]]></content>
+      <category term="ko"/>
+      <category term="ko"/>
+      <category term="edutech"/>
+    </entry>
     <entry>
       <title type="html"><![CDATA[Init my blog]]></title>
       <link href="https://wpti.dev/posts/init-my-blog"/>
