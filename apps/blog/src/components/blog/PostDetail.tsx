@@ -77,10 +77,10 @@ export const PostDetail = ({
           {post.title}
         </h1>
 
-        {/* Excerpt */}
-        {post.excerpt && (
+        {/* Subtitle */}
+        {post.subtitle && (
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
-            {post.excerpt}
+            {post.subtitle}
           </p>
         )}
 
