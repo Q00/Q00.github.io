@@ -18,16 +18,25 @@ export interface SEOMetadata {
 
 export const generatePostSEO = (post: BlogPost): SEOMetadata => {
   const title = post.seo?.metaTitle || post.title;
-  const description = post.seo?.metaDescription || post.excerpt;
   const keywords = post.seo?.keywords || post.tags;
   const ogImage = post.coverImage || `${CONFIG.SITE_URL}/images/og-post.png`;
 
+  // Build OG title: include subtitle if available
+  const ogTitle = post.subtitle ? `${title} — ${post.subtitle}` : title;
+
+  // Build description: prefer metaDescription, then subtitle + excerpt, then just excerpt
+  const description = post.seo?.metaDescription ||
+    (post.subtitle ? `${post.subtitle}. ${post.excerpt}` : post.excerpt);
+
+  // OG description: subtitle first, then excerpt as fallback
+  const ogDescription = post.seo?.metaDescription || post.subtitle || post.excerpt;
+
   return {
     title: `${title} | ${CONFIG.SITE_TITLE}`,
-    description,
+    description: truncateDescription(description),
     keywords,
-    ogTitle: title,
-    ogDescription: description,
+    ogTitle,
+    ogDescription: truncateDescription(ogDescription),
     ogUrl: `${CONFIG.SITE_URL}/posts/${post.slug}`,
     ogImage,
     twitterCard: post.coverImage ? 'summary_large_image' : 'summary',

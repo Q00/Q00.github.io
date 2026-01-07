@@ -102,13 +102,6 @@ export const PostDetail = ({
 
           <span>{post.readingTimeMinutes} min read</span>
 
-          {post.views && (
-            <>
-              <span>•</span>
-              <span>{post.views.toLocaleString()} views</span>
-            </>
-          )}
-
           {post.wordCount && (
             <>
               <span>•</span>

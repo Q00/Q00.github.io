@@ -97,12 +97,6 @@ export const PostCard = ({
             </time>
             <span className="hidden sm:inline">•</span>
             <span className="shrink-0">{post.readingTimeMinutes} min read</span>
-            {post.views && (
-              <>
-                <span className="hidden sm:inline">•</span>
-                <span className="shrink-0">{post.views.toLocaleString()} views</span>
-              </>
-            )}
             {post.wordCount && (
               <>
                 <span className="hidden lg:inline">•</span>
