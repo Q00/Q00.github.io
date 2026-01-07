@@ -5,7 +5,7 @@
     <link>https://wpti.dev</link>
     <description><![CDATA[When Pressure Turns into Inspiration]]></description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 01 Jan 2026 15:33:53 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 07 Jan 2026 15:48:26 GMT</lastBuildDate>
     <atom:link href="https://wpti.dev/rss.xml" rel="self" type="application/rss+xml"/>
     <generator>Q00 Blog RSS Generator</generator>
     <webMaster>jqyu.lee@gmail.com (JQ)</webMaster>
@@ -17,12 +17,16 @@
       <link>https://wpti.dev/posts/edutech-in-ai-era-ko</link>
       <guid isPermaLink="true">https://wpti.dev/posts/edutech-in-ai-era-ko</guid>
       <description><![CDATA[온톨로지의 함정: 우리는 왜 도로위를 달려야 하는가?
-아이작 아시모프의 소설 ‘최후의 질문’에는 인류가 수조 년에 걸쳐 AI에게 “우주의 엔트로피를 역전시킬 수 있는가?”를 묻는 장면이 나온다. 모든 데이터가 모이고 우주가 끝나갈 시점 AI는 답한다. “빛이 있으라”. 그리고 새로운 우주가 탄생한다. 이것은 단순한 창조의 이야기가 아니다. AI가 기존 우주의 물리적 법칙, 한계를 최적화한게 아니라 한계 자체를 파괴하고 근본적인 문제를 해결했음을......]]></description>
+아이작 아시모프의 소설 ‘최후의 질문’에는 인류가 수조 년에 걸쳐 AI에게 던진 단 하나의 질문을 다룬다.
+
+우주의 엔트로피를 역전시킬 수 있는가?
+
+인간이 이 질문에 매달린 이유는 명확하다. 인간은 우주의 수명과 물리 법칙이라는 ‘절대적 한계’에 갇힌 존재이기 때문이다. 이 한계 안에서 인간은 에너지를 아끼고 효율을 높이는 최적화를 해왔지만 빛 에너지를 얻을 수 있었던 우주에 항성의 개수가......]]></description>
       <pubDate>Thu, 01 Jan 2026 15:18:04 GMT</pubDate>
       <author>Jae Gyu Lee</author>
-      <category><![CDATA[ko]]></category>
-      <category><![CDATA[ko]]></category>
       <category><![CDATA[edutech]]></category>
+      <category><![CDATA[edutech]]></category>
+      <category><![CDATA[ko]]></category>
     </item>
     <item>
       <title><![CDATA[Init my blog]]></title>
