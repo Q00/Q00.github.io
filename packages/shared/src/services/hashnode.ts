@@ -526,7 +526,7 @@ export class HashnodeService {
       slug: hashnodePost.slug,
       title: hashnodePost.title,
       subtitle: hashnodePost.subtitle,
-      content: hashnodePost.content.markdown,
+      content: hashnodePost.content.html,
       excerpt: hashnodePost.brief,
       publishedAt: new Date(hashnodePost.publishedAt),
       updatedAt: new Date(hashnodePost.updatedAt),

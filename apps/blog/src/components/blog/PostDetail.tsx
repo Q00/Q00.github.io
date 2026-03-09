@@ -156,9 +156,10 @@ export const PostDetail = ({
 
       {/* Post Content */}
       <div className="mb-12">
-        <MarkdownRenderer 
-          content={post.content} 
+        <MarkdownRenderer
+          content={post.content}
           className="prose-lg"
+          isHtml
         />
       </div>
 

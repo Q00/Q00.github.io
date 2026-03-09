@@ -18,6 +18,7 @@ import 'prismjs/components/prism-css';
 interface MarkdownRendererProps {
   content: string;
   className?: string;
+  isHtml?: boolean;
 }
 
 const configureMarked = () => {
@@ -45,37 +46,44 @@ const configureMarked = () => {
   marked.use({ renderer });
 };
 
-export const MarkdownRenderer = ({ content, className = '' }: MarkdownRendererProps) => {
+export const MarkdownRenderer = ({ content, className = '', isHtml = false }: MarkdownRendererProps) => {
   // Configure marked on component mount
   useEffect(() => {
-    configureMarked();
-  }, []);
+    if (!isHtml) {
+      configureMarked();
+    }
+  }, [isHtml]);
 
   const htmlContent = useMemo(() => {
     if (!content) return '';
-    
+
     try {
-      // Parse markdown to HTML
-      const rawHtml = marked(content) as string;
-      
+      const rawHtml = isHtml ? content : (marked(content) as string);
+
       // Sanitize HTML to prevent XSS
       const sanitizedHtml = DOMPurify.sanitize(rawHtml, {
         ALLOWED_TAGS: [
           'p', 'br', 'strong', 'em', 'u', 's', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-          'ul', 'ol', 'li', 'blockquote', 'pre', 'code', 'a', 'img',
+          'ul', 'ol', 'li', 'blockquote', 'pre', 'code', 'a', 'img', 'hr',
           'table', 'thead', 'tbody', 'tr', 'th', 'td',
-          'div', 'span', 'del', 'ins'
+          'div', 'span', 'del', 'ins', 'figure', 'figcaption', 'picture', 'source',
+          'iframe', 'video', 'audio', 'sup', 'sub', 'mark', 'details', 'summary'
         ],
-        ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'class', 'id', 'target', 'rel'],
+        ALLOWED_ATTR: [
+          'href', 'src', 'alt', 'title', 'class', 'id', 'target', 'rel',
+          'width', 'height', 'loading', 'srcset', 'sizes', 'type', 'media',
+          'allow', 'allowfullscreen', 'frameborder', 'name', 'open',
+          'style', 'data-src'
+        ],
         ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|xmpp|data):|[^a-z]|[a-z+.-]+(?:[^a-z+.-:]|$))/i,
       });
-      
+
       return sanitizedHtml;
     } catch (err) {
       console.error('Error rendering markdown:', err);
       return '<p>Error rendering content</p>';
     }
-  }, [content]);
+  }, [content, isHtml]);
 
   // Re-run Prism highlighting after content changes
   useEffect(() => {
