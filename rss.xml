@@ -5,13 +5,27 @@
     <link>https://wpti.dev</link>
     <description><![CDATA[When Pressure Turns into Inspiration]]></description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 07 Jan 2026 15:48:26 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 09 Mar 2026 19:28:05 GMT</lastBuildDate>
     <atom:link href="https://wpti.dev/rss.xml" rel="self" type="application/rss+xml"/>
     <generator>Q00 Blog RSS Generator</generator>
     <webMaster>jqyu.lee@gmail.com (JQ)</webMaster>
     <managingEditor>jqyu.lee@gmail.com (JQ)</managingEditor>
     <copyright>Copyright 2026 JQ</copyright>
     <ttl>60</ttl>
+    <item>
+      <title><![CDATA[엔지니어가 디자인띵킹을 강연하게 됐을 때]]></title>
+      <link>https://wpti.dev/posts/design-thinking-ko</link>
+      <guid isPermaLink="true">https://wpti.dev/posts/design-thinking-ko</guid>
+      <description><![CDATA[원래 내 자리가 아니었다.
+서울대학교 학생들 앞에 서게 된건 세원이 출장을 가는 바람에 생긴 일이었다. 세원은 Amazon Music의 Principal Designer. 디자인띵킹이 그의 일이다. 원래 그 자리에 서야 할 친구였다. 근데 갑자기 실리콘밸리에서 출장이 잡혔고 나한테 연락이 왔다.
+"형, 형이 해볼래?"
+나는 엔지니어다. 디자인띵킹을 강연해본...]]></description>
+      <pubDate>Mon, 09 Mar 2026 19:11:44 GMT</pubDate>
+      <author>Jae Gyu Lee</author>
+      <category><![CDATA[ko]]></category>
+      <category><![CDATA[ko]]></category>
+      <category><![CDATA[ouroboros]]></category>
+    </item>
     <item>
       <title><![CDATA[더 빠른 스포츠카를 만들 것인가? 빛이 있으라를 외칠 것인가?]]></title>
       <link>https://wpti.dev/posts/edutech-in-ai-era-ko</link>

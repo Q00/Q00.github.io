@@ -4,10 +4,25 @@
   <link href="https://wpti.dev"/>
   <link href="https://wpti.dev/atom.xml" rel="self"/>
   <id>https://wpti.dev</id>
-  <updated>2026-01-07T15:48:26.982Z</updated>
+  <updated>2026-03-09T19:28:05.106Z</updated>
   <subtitle><![CDATA[When Pressure Turns into Inspiration]]></subtitle>
   <generator>Q00 Blog Atom Generator</generator>
   <author><name>JQ</name></author>
+    <entry>
+      <title type="html"><![CDATA[엔지니어가 디자인띵킹을 강연하게 됐을 때]]></title>
+      <link href="https://wpti.dev/posts/design-thinking-ko"/>
+      <id>https://wpti.dev/posts/design-thinking-ko</id>
+      <published>2026-03-09T19:11:44.746Z</published>
+      <updated>2026-03-09T19:11:44.746Z</updated>
+      <author><name>Jae Gyu Lee</name></author>
+      <content type="html"><![CDATA[원래 내 자리가 아니었다.
+서울대학교 학생들 앞에 서게 된건 세원이 출장을 가는 바람에 생긴 일이었다. 세원은 Amazon Music의 Principal Designer. 디자인띵킹이 그의 일이다. 원래 그 자리에 서야 할 친구였다. 근데 갑자기 실리콘밸리에서 출장이 잡혔고 나한테 연락이 왔다.
+"형, 형이 해볼래?"
+나는 엔지니어다. 디자인띵킹을 강연해본...]]></content>
+      <category term="ko"/>
+      <category term="ko"/>
+      <category term="ouroboros"/>
+    </entry>
     <entry>
       <title type="html"><![CDATA[더 빠른 스포츠카를 만들 것인가? 빛이 있으라를 외칠 것인가?]]></title>
       <link href="https://wpti.dev/posts/edutech-in-ai-era-ko"/>
