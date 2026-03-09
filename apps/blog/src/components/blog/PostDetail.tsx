@@ -128,6 +128,18 @@ export const PostDetail = ({
           </div>
         )}
 
+        {/* Cover Image */}
+        {post.coverImage && (
+          <div className="mb-8 rounded-lg overflow-hidden">
+            <img
+              src={post.coverImage}
+              alt={post.title}
+              className="w-full h-auto object-cover"
+              loading="eager"
+            />
+          </div>
+        )}
+
         {/* Share Button */}
         <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 pb-6">
           <button
