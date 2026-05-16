@@ -4,6 +4,9 @@ import { RouterProvider, createRouter } from '@tanstack/react-router'
 
 import './styles/globals.css'
 
+// Register local Markdown content before any route loader runs.
+import './content-data'
+
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
 

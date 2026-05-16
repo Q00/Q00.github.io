@@ -16,3 +16,5 @@ export * from './utils/rss';
 // Services
 export * from './services/hashnode';
 export * from './services/content';
+export * from './services/markdown';
+export * from './services/local-content';

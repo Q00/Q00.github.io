@@ -1,10 +1,13 @@
-name: Deploy Blog with Hashnode Integration
+name: Deploy Blog (Markdown backup)
 
 on:
   push:
     branches: [main, master]
   pull_request:
     branches: [main, master]
+  # Triggered by Q00/blog-backup when a new post is published.
+  repository_dispatch:
+    types: [content-updated]
   # Manual trigger for republishing
   workflow_dispatch:
 
@@ -48,12 +51,20 @@ jobs:
   deploy:
     needs: test
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event_name == 'repository_dispatch'
 
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Checkout blog content (Q00/blog-backup)
+        uses: actions/checkout@v4
+        with:
+          repository: Q00/blog-backup
+          ref: main
+          token: ${{ secrets.BLOG_BACKUP_TOKEN }}
+          path: apps/blog/content
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2
@@ -71,7 +82,7 @@ jobs:
       - name: Build shared packages
         run: pnpm build:packages
 
-      # Build blog with Hashnode integration (read-only mode)
+      # Build blog from the local Markdown backup (no Hashnode API)
       - name: Build blog for production
         run: pnpm build:blog
         env:
@@ -84,12 +95,6 @@ jobs:
           VITE_AUTHOR_EMAIL: "jqyu.lee@gmail.com"
           VITE_POSTS_PER_PAGE: 10
           VITE_FEATURED_POSTS_COUNT: 3
-
-          # Hashnode configuration (READ-ONLY)
-          VITE_HASHNODE_ENABLED: true
-          VITE_HASHNODE_PUBLICATION_ID: ${{ secrets.HASHNODE_PUBLICATION_ID }}
-          VITE_HASHNODE_PUBLICATION_HOST: ${{ secrets.HASHNODE_PUBLICATION_HOST }}
-          # Note: NO API TOKEN - read-only mode only
           VITE_GITHUB_CLIENT_ID: ""
 
       - name: Deploy to GitHub Pages

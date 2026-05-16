@@ -171,7 +171,6 @@ export const PostDetail = ({
         <MarkdownRenderer
           content={post.content}
           className="prose-lg"
-          isHtml
         />
       </div>
 

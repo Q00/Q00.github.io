@@ -1,6 +1,7 @@
 import { BlogPost, BlogMetadata } from '../types/blog';
 import { CONFIG, STORAGE_KEYS } from '../constants/config';
 import { HashnodeService } from './hashnode';
+import { createLocalContentProvider } from './local-content';
 
 export interface ContentProvider {
   getPosts(limit?: number, offset?: number): Promise<BlogPost[]>;
@@ -294,15 +295,13 @@ export class HashnodeContentProvider implements ContentProvider {
   }
 }
 
-export function createContentProvider(config: {
-  publicationId: string;
+export function createContentProvider(_config?: {
+  publicationId?: string;
   apiToken?: string;
 }): ContentProvider {
-  if (!config.publicationId) {
-    throw new Error(`createContentProvider: publicationId is required but got: "${config.publicationId}"`);
-  }
-
-  const hashnodeService = new HashnodeService(config.publicationId, config.apiToken);
-  return new HashnodeContentProvider(hashnodeService);
+  // Content is sourced from the local Markdown backup (Hashnode GitHub backup),
+  // not the deprecated Hashnode GraphQL API. The argument is kept for
+  // backward compatibility with existing route loaders.
+  return createLocalContentProvider();
 }
 

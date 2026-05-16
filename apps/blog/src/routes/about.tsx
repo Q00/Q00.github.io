@@ -30,9 +30,9 @@ function AboutPage() {
 
         if (draft) {
           setDraftData(draft)
-        } else {
-          throw new Error('No draft data found')
         }
+        // Drafts are no longer sourced from Hashnode; fall back to the
+        // static About content rendered below.
       } catch (error) {
         console.error('Failed to load about info from Hashnode:', error)
         setError(error instanceof Error ? error.message : 'Failed to load content')
@@ -93,7 +93,20 @@ function AboutPage() {
           {draftData?.content?.markdown ? (
             <MarkdownRenderer content={draftData.content.markdown} />
           ) : (
-            <p className="text-stone-500 dark:text-stone-400">No content available.</p>
+            <p className="text-stone-600 dark:text-stone-300">
+              엔지니어로서 에듀테크와 컨텍스트 기반 문화에 관심이 많습니다.
+              이 블로그는 스트레스가 부담을 넘어 통찰과 영감의 원천이 되는
+              과정을 기록합니다. 글은{' '}
+              <a
+                href="https://q00.hashnode.dev"
+                target="_blank"
+                rel="noreferrer"
+                className="underline"
+              >
+                q00.hashnode.dev
+              </a>
+              에서도 볼 수 있습니다.
+            </p>
           )}
         </div>
       </div>

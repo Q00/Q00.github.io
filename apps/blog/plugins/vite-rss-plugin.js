@@ -1,6 +1,5 @@
-import { writeFileSync, mkdirSync } from "fs";
+import { writeFileSync, mkdirSync, readdirSync, readFileSync, existsSync } from "fs";
 import { join } from "path";
-import { loadEnv } from "vite";
 
 export function rssPlugin() {
   return {
@@ -8,55 +7,40 @@ export function rssPlugin() {
     apply: "build",
     async closeBundle() {
       try {
-        console.log("🔄 Generating RSS and Atom feeds...");
+        console.log("🔄 Generating RSS and Atom feeds from local Markdown...");
 
-        // Load environment variables manually since this runs in Node.js context
-        const env = loadEnv('production', process.cwd(), '');
-
-        // Merge with process.env to ensure all variables are available
-        Object.assign(process.env, env);
-
-        // Import dynamically to avoid module resolution issues
-        const { createContentProvider, generateRSSFeed, generateAtomFeed } =
+        const { parseMarkdownPosts, generateRSSFeed, generateAtomFeed } =
           await import("@q00-blog/shared");
 
-        // Check if Hashnode integration is properly configured
-        const hashnodeEnabled = process.env.VITE_HASHNODE_ENABLED === 'true';
-        const hashnodeId = process.env.VITE_HASHNODE_PUBLICATION_ID;
-        const hashnodeHost = process.env.VITE_HASHNODE_PUBLICATION_HOST;
+        const contentDir = join(process.cwd(), "content");
+        let files = [];
 
-        let posts = [];
-
-        if (!hashnodeEnabled || !hashnodeId || !hashnodeHost) {
-          console.log('ℹ️  Hashnode integration not configured, generating empty feeds');
-          console.log('   (This is normal for local builds without environment variables)');
-          posts = [];
+        if (existsSync(contentDir)) {
+          files = readdirSync(contentDir)
+            .filter((name) => name.endsWith(".md"))
+            .map((name) => ({
+              name,
+              raw: readFileSync(join(contentDir, name), "utf8"),
+            }));
         } else {
-          console.log('✅ Hashnode configuration found, fetching posts...');
-          const contentProvider = createContentProvider({
-            publicationId: hashnodeId,
-            apiToken: process.env.VITE_HASHNODE_API_TOKEN
-          });
-          posts = await contentProvider.getPosts(20);
+          console.warn(`No content directory at ${contentDir}`);
         }
 
+        const posts = parseMarkdownPosts(files);
+
         if (posts.length === 0) {
-          console.warn("️No posts found, generating empty feeds");
+          console.warn("No posts found, generating empty feeds");
         } else {
           console.log(`Found ${posts.length} posts for feeds`);
         }
 
-        // Generate RSS and Atom feeds
         const rssXml = generateRSSFeed(posts);
         const atomXml = generateAtomFeed(posts);
 
-        // Ensure dist directory exists
         const distPath = "dist";
         mkdirSync(distPath, { recursive: true });
-
-        // Write feeds to dist directory
         writeFileSync(join(distPath, "rss.xml"), rssXml, "utf8");
-        writeFileSync(join(distPath, "feed.xml"), rssXml, "utf8"); // Alternative path
+        writeFileSync(join(distPath, "feed.xml"), rssXml, "utf8");
         writeFileSync(join(distPath, "atom.xml"), atomXml, "utf8");
 
         console.log("RSS and Atom feeds generated successfully");
@@ -67,7 +51,6 @@ export function rssPlugin() {
         console.error("❌ Failed to generate feeds:", error);
         console.warn("📝 Using fallback RSS generation...");
 
-        // Fallback simple RSS generation
         const fallbackRss = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>

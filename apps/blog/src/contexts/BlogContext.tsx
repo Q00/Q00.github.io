@@ -5,12 +5,7 @@ import {
   useEffect,
   ReactNode,
 } from "react";
-import {
-  BlogPost,
-  HashnodeContentProvider,
-  HashnodeService,
-} from "@q00-blog/shared";
-import { ENV } from "@/config/env";
+import { BlogPost, createContentProvider } from "@q00-blog/shared";
 
 interface BlogContextValue {
   posts: BlogPost[];
@@ -63,22 +58,8 @@ export const BlogProvider = ({ children }: BlogProviderProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Create content provider with unified environment variables
-  const contentProvider = (() => {
-    if (ENV.HASHNODE_ENABLED) {
-      if (!ENV.HASHNODE_PUBLICATION_ID) {
-        throw new Error(`VITE_HASHNODE_PUBLICATION_ID is required but got: "${ENV.HASHNODE_PUBLICATION_ID}"`);
-      }
-      const hashnodeService = new HashnodeService(
-        ENV.HASHNODE_PUBLICATION_ID,
-        ENV.HASHNODE_API_TOKEN
-      );
-      return new HashnodeContentProvider(hashnodeService);
-    }
-
-    // Fallback - you could create a different provider here
-    throw new Error("No content provider configured");
-  })();
+  // Content is sourced from the local Markdown backup bundled at build time.
+  const contentProvider = createContentProvider();
 
   const fetchPosts = async () => {
     try {
