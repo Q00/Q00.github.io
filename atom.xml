@@ -4,21 +4,78 @@
   <link href="https://wpti.dev"/>
   <link href="https://wpti.dev/atom.xml" rel="self"/>
   <id>https://wpti.dev</id>
-  <updated>2026-03-09T19:28:36.138Z</updated>
+  <updated>2026-05-16T16:24:56.771Z</updated>
   <subtitle><![CDATA[When Pressure Turns into Inspiration]]></subtitle>
   <generator>Q00 Blog Atom Generator</generator>
   <author><name>JQ</name></author>
+    <entry>
+      <title type="html"><![CDATA[Closer to the Wall, Further from the Light]]></title>
+      <link href="https://wpti.dev/posts/how-to-implement-ooo-en"/>
+      <id>https://wpti.dev/posts/how-to-implement-ooo-en</id>
+      <published>2026-03-22T18:47:04.527Z</published>
+      <updated>2026-03-22T18:47:04.527Z</updated>
+      <author><name>JQ</name></author>
+      <content type="html"><![CDATA[Ouroboros Series 03 — Methodology 01: What Happens When an Engineer Prepares a Design Thinking Talk · 02: Running Out of Context In post 02 I talked about putting orchestration inside MCP. The main se…...]]></content>
+      <category term="ouroboros"/>
+      <category term="ouroboros"/>
+      <category term="en"/>
+    </entry>
+    <entry>
+      <title type="html"><![CDATA[빛은 등 뒤에 있었다]]></title>
+      <link href="https://wpti.dev/posts/how-to-implement-ooo"/>
+      <id>https://wpti.dev/posts/how-to-implement-ooo</id>
+      <published>2026-03-22T16:28:07.462Z</published>
+      <updated>2026-03-22T16:28:07.462Z</updated>
+      <author><name>JQ</name></author>
+      <content type="html"><![CDATA[Ouroboros 시리즈 03 — 방법론 01편: 엔지니어가 디자인씽킹을 강연하게 됐을 때 · 02편: 컨텍스트가 부족했다 02편에서 MCP 안에 오케스트레이션을 넣은 이야기를 했다. 메인 세션이 MCP 콜 하나를 던지면, 안에서 AC 트리를 파싱하고 병렬 세션을 띄우고 결과를 모아서 돌려준다고. 이번 글은 그 안에서 실제로 뭐가 일어나는지에 대한 얘기다.…...]]></content>
+      <category term="ko"/>
+      <category term="ko"/>
+      <category term="ouroboros"/>
+    </entry>
+    <entry>
+      <title type="html"><![CDATA[Running Out of Context]]></title>
+      <link href="https://wpti.dev/posts/running-out-of-context"/>
+      <id>https://wpti.dev/posts/running-out-of-context</id>
+      <published>2026-03-15T18:04:04.957Z</published>
+      <updated>2026-03-15T18:04:04.957Z</updated>
+      <author><name>JQ</name></author>
+      <content type="html"><![CDATA[Ouroboros Series 02 — Structure Reading 01: What Happens When an Engineer Prepares a Design Thinking Talk first helps, but isn't required. Here's what Ouroboros does, simply put. It interviews you, cr…...]]></content>
+      <category term="ouroboros"/>
+      <category term="ouroboros"/>
+      <category term="en"/>
+    </entry>
+    <entry>
+      <title type="html"><![CDATA[What Happens When an Engineer Prepares a Design Thinking Talk]]></title>
+      <link href="https://wpti.dev/posts/what-happens-when-an-engineer-prepares-a-design-thinking-talk"/>
+      <id>https://wpti.dev/posts/what-happens-when-an-engineer-prepares-a-design-thinking-talk</id>
+      <published>2026-03-15T18:02:40.154Z</published>
+      <updated>2026-03-15T18:02:40.154Z</updated>
+      <author><name>JQ</name></author>
+      <content type="html"><![CDATA[It wasn't my seat to begin with. I ended up in front of SNU students because Sewon had a business trip. Sewon is a Principal Designer at Amazon Music. Design thinking is his work. He was the one who w…...]]></content>
+      <category term="ouroboros"/>
+      <category term="ouroboros"/>
+      <category term="en"/>
+    </entry>
+    <entry>
+      <title type="html"><![CDATA[컨텍스트가 부족했다.]]></title>
+      <link href="https://wpti.dev/posts/mcp-as-agent"/>
+      <id>https://wpti.dev/posts/mcp-as-agent</id>
+      <published>2026-03-15T17:24:17.318Z</published>
+      <updated>2026-03-15T17:24:17.318Z</updated>
+      <author><name>JQ</name></author>
+      <content type="html"><![CDATA[Ouroboros 시리즈 02 — 구조 01편: 엔지니어가 디자인띵킹을 강연하게 됐을 때 을 먼저 읽으면 좋습니다. Ouroboros가 하는 일을 단순하게 말하면 이렇다. 인터뷰를 하고, Seed를 만들고, Acceptance Criteria를 분해하고, 각 AC를 실행하고, 평가한다. 이걸 하나의 세션에서 하면 문제가 생긴다. 컨텍스트가 바닥난다. AC가…...]]></content>
+      <category term="ko"/>
+      <category term="ko"/>
+      <category term="ouroboros"/>
+    </entry>
     <entry>
       <title type="html"><![CDATA[엔지니어가 디자인띵킹을 강연하게 됐을 때]]></title>
       <link href="https://wpti.dev/posts/design-thinking-ko"/>
       <id>https://wpti.dev/posts/design-thinking-ko</id>
       <published>2026-03-09T19:11:44.746Z</published>
       <updated>2026-03-09T19:11:44.746Z</updated>
-      <author><name>Jae Gyu Lee</name></author>
-      <content type="html"><![CDATA[원래 내 자리가 아니었다.
-서울대학교 학생들 앞에 서게 된건 세원이 출장을 가는 바람에 생긴 일이었다. 세원은 Amazon Music의 Principal Designer. 디자인띵킹이 그의 일이다. 원래 그 자리에 서야 할 친구였다. 근데 갑자기 실리콘밸리에서 출장이 잡혔고 나한테 연락이 왔다.
-"형, 형이 해볼래?"
-나는 엔지니어다. 디자인띵킹을 강연해본...]]></content>
+      <author><name>JQ</name></author>
+      <content type="html"><![CDATA[원래 내자리가 아니였다. 서울대학교 학생들 앞에 서게 된건 세원이 출장을 가는 바람에 생긴 일이었다....]]></content>
       <category term="ko"/>
       <category term="ko"/>
       <category term="ouroboros"/>
@@ -29,13 +86,8 @@
       <id>https://wpti.dev/posts/edutech-in-ai-era-ko</id>
       <published>2026-01-01T15:18:04.346Z</published>
       <updated>2026-01-01T15:18:04.346Z</updated>
-      <author><name>Jae Gyu Lee</name></author>
-      <content type="html"><![CDATA[온톨로지의 함정: 우리는 왜 도로위를 달려야 하는가?
-아이작 아시모프의 소설 ‘최후의 질문’에는 인류가 수조 년에 걸쳐 AI에게 던진 단 하나의 질문을 다룬다.
-
-우주의 엔트로피를 역전시킬 수 있는가?
-
-인간이 이 질문에 매달린 이유는 명확하다. 인간은 우주의 수명과 물리 법칙이라는 ‘절대적 한계’에 갇힌 존재이기 때문이다. 이 한계 안에서 인간은 에너지를 아끼고 효율을 높이는 최적화를 해왔지만 빛 에너지를 얻을 수 있었던 우주에 항성의 개수가......]]></content>
+      <author><name>JQ</name></author>
+      <content type="html"><![CDATA[2019년 에듀테크 스타트업부터 지금까지 에듀테크 도메인에서 느꼈던 가장 큰 갈증은 본질에 대한 것이었습니다. 학생들은 무엇을 모르는지조차 모르는 상태에서 도로 위를 달리고 있었으니까요. 최근 팔란티어의 AI 철학을 접하며 그 해답의 실마리를 찾았습니다....]]></content>
       <category term="edutech"/>
       <category term="edutech"/>
       <category term="ko"/>
@@ -46,10 +98,10 @@
       <id>https://wpti.dev/posts/init-my-blog</id>
       <published>2025-09-17T14:49:39.753Z</published>
       <updated>2025-09-17T14:49:39.753Z</updated>
-      <author><name>Jae Gyu Lee</name></author>
+      <author><name>JQ</name></author>
       <content type="html"><![CDATA[Sometimes stress isn’t just a weight — it’s a spark. This blog explores how moments of tension, pressure, and frustration can unexpectedly lead to fresh ideas and creative breakthroughs....]]></content>
-      <category term="first post"/>
-      <category term="first post"/>
+      <category term="first-post-1"/>
+      <category term="first-post-1"/>
       <category term="en"/>
     </entry>
 </feed>
