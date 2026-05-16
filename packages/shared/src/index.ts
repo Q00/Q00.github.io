@@ -12,6 +12,7 @@ export * from './utils/date';
 export * from './utils/slug';
 export * from './utils/seo';
 export * from './utils/rss';
+export * from './utils/post';
 
 // Services
 export * from './services/hashnode';

@@ -1,108 +1,167 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { useMemo, useState } from 'react'
+import { getPostLanguage, getTopicTags, type PostLanguage } from '@q00-blog/shared'
 import { useBlog } from '@/contexts/BlogContext'
-import { PostList } from '@/components/blog/PostList'
-import { ENV } from '@/config/env'
-import { useState } from 'react'
+import { PostListItem } from '@/components/blog/PostListItem'
+import { LoadingSpinner } from '@q00-blog/ui'
 
 export const Route = createFileRoute('/posts/')({
   component: PostsPage,
 })
 
+type LangFilter = 'all' | PostLanguage
+
+const LANGS: Array<{ key: LangFilter; label: string }> = [
+  { key: 'all', label: 'All' },
+  { key: 'ko', label: '한국어' },
+  { key: 'en', label: 'English' },
+]
+
 function PostsPage() {
   const { posts, isLoading, error } = useBlog()
-  const [selectedFilter, setSelectedFilter] = useState<'all' | 'recent' | 'popular'>('all')
-  const [selectedLanguage, setSelectedLanguage] = useState<'all' | 'ko' | 'en'>('all')
+  const [lang, setLang] = useState<LangFilter>('all')
+  const [topic, setTopic] = useState<string | null>(null)
 
-  const filteredPosts = posts.filter(post => {
-    // First apply content filter
-    let passesContentFilter = true
-    switch (selectedFilter) {
-      case 'recent': {
-        const oneMonthAgo = new Date()
-        oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1)
-        const postDate = post.publishedAt instanceof Date ? post.publishedAt : new Date(post.publishedAt)
-        passesContentFilter = postDate >= oneMonthAgo
-        break
-      }
-      case 'popular':
-        passesContentFilter = typeof post.views === 'number' && post.views > 100
-        break
-    }
+  // Topic facets that actually help navigate the archive: real tags shared by
+  // more than one post, busiest first.
+  const topics = useMemo(() => {
+    const counts = new Map<string, number>()
+    posts.forEach((p) =>
+      getTopicTags(p).forEach((t) => counts.set(t, (counts.get(t) ?? 0) + 1))
+    )
+    return [...counts.entries()]
+      .filter(([, n]) => n > 1)
+      .sort((a, b) => b[1] - a[1])
+      .map(([tag, n]) => ({ tag, n }))
+  }, [posts])
 
-    // Then apply language filter
-    let passesLanguageFilter = true
-    if (selectedLanguage !== 'all') {
-      passesLanguageFilter = post.tags.includes(selectedLanguage)
-    }
-
-    return passesContentFilter && passesLanguageFilter
-  })
+  const filtered = useMemo(
+    () =>
+      posts.filter((p) => {
+        if (lang !== 'all' && getPostLanguage(p) !== lang) return false
+        if (topic && !getTopicTags(p).includes(topic)) return false
+        return true
+      }),
+    [posts, lang, topic]
+  )
 
   if (error) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-red-600 mb-4">Error Loading Posts</h1>
-          <p className="text-stone-600 dark:text-stone-300">{error}</p>
-        </div>
+      <div className="container mx-auto px-4 py-16">
+        <p className="font-mono text-sm uppercase tracking-[0.2em] text-stone-400">
+          Error
+        </p>
+        <h1 className="font-display text-3xl text-stone-900 dark:text-white mt-2">
+          Could not load posts
+        </h1>
+        <p className="text-stone-600 dark:text-stone-300 mt-3">{error}</p>
       </div>
     )
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <header className="mb-8">
-        <div className="flex flex-col gap-4 mb-4">
-          <h1 className="text-3xl font-bold text-stone-900 dark:text-white">
-            All Posts
-          </h1>
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 text-sm">
-            <div className="flex items-center gap-2">
-              {(['all', 'recent', 'popular'] as const).map((filter) => (
-                <button
-                  key={filter}
-                  onClick={() => setSelectedFilter(filter)}
-                  className={`px-2 py-1 rounded transition-colors ${
-                    selectedFilter === filter
-                      ? 'text-stone-900 dark:text-white bg-stone-100 dark:bg-stone-800'
-                      : 'text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-300'
-                  }`}
-                >
-                  [{filter}]
-                </button>
-              ))}
-            </div>
-            <div className="hidden sm:block w-px h-4 bg-stone-300 dark:bg-stone-600"></div>
-            <div className="flex items-center gap-2">
-              {(['all', 'ko', 'en'] as const).map((language) => (
-                <button
-                  key={language}
-                  onClick={() => setSelectedLanguage(language)}
-                  className={`px-2 py-1 rounded transition-colors ${
-                    selectedLanguage === language
-                      ? 'text-stone-900 dark:text-white bg-stone-100 dark:bg-stone-800'
-                      : 'text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-300'
-                  }`}
-                >
-                  [{language === 'all' ? 'all' : language.toUpperCase()}]
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-        <p className="text-stone-600 dark:text-stone-300">
-          {filteredPosts.length} posts found
-          {selectedFilter !== 'all' && ` • ${selectedFilter}`}
-          {selectedLanguage !== 'all' && ` • ${selectedLanguage.toUpperCase()}`}
+    <div className="container mx-auto px-4 py-12 sm:py-16 max-w-3xl">
+      {/* Masthead */}
+      <header className="mb-10 sm:mb-14">
+        <p className="font-mono text-xs uppercase tracking-[0.28em] text-stone-400 dark:text-stone-500">
+          Index — {posts.length} {posts.length === 1 ? 'essay' : 'essays'}
         </p>
+        <h1 className="font-display text-5xl sm:text-6xl font-medium text-stone-900 dark:text-white mt-3 tracking-tight">
+          Writing
+        </h1>
       </header>
 
-      <PostList
-        posts={filteredPosts}
-        isLoading={isLoading}
-        postsPerPage={ENV.POSTS_PER_PAGE}
-        showFeatured={false}
-      />
+      {/* Toolbar */}
+      <div className="flex flex-col gap-5 border-y border-stone-200 dark:border-stone-800 py-5 mb-10">
+        <div className="flex items-center justify-between gap-4 flex-wrap">
+          <span className="font-mono text-xs uppercase tracking-[0.2em] text-stone-400 dark:text-stone-500">
+            Language
+          </span>
+          <div className="inline-flex font-mono text-xs">
+            {LANGS.map((l, i) => {
+              const active = lang === l.key
+              return (
+                <button
+                  key={l.key}
+                  onClick={() => setLang(l.key)}
+                  aria-pressed={active}
+                  className={`px-3.5 py-1.5 border border-stone-300 dark:border-stone-700 transition-colors
+                    ${i === 0 ? 'rounded-l-full' : ''} ${i === LANGS.length - 1 ? 'rounded-r-full' : ''}
+                    ${i !== 0 ? '-ml-px' : ''}
+                    ${
+                      active
+                        ? 'bg-stone-900 text-stone-50 border-stone-900 dark:bg-stone-100 dark:text-stone-900 dark:border-stone-100 relative z-10'
+                        : 'text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100'
+                    }`}
+                >
+                  {l.label}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+
+        {topics.length > 0 && (
+          <div className="flex items-center justify-between gap-4 flex-wrap">
+            <span className="font-mono text-xs uppercase tracking-[0.2em] text-stone-400 dark:text-stone-500">
+              Topic
+            </span>
+            <div className="flex flex-wrap gap-x-5 gap-y-2 font-mono text-xs">
+              <button
+                onClick={() => setTopic(null)}
+                className={`uppercase tracking-[0.12em] transition-colors ${
+                  topic === null
+                    ? 'text-stone-900 dark:text-stone-100 underline underline-offset-[6px] decoration-2'
+                    : 'text-stone-400 dark:text-stone-500 hover:text-stone-700 dark:hover:text-stone-300'
+                }`}
+              >
+                All
+              </button>
+              {topics.map(({ tag, n }) => {
+                const active = topic === tag
+                return (
+                  <button
+                    key={tag}
+                    onClick={() => setTopic(active ? null : tag)}
+                    className={`uppercase tracking-[0.12em] transition-colors ${
+                      active
+                        ? 'text-stone-900 dark:text-stone-100 underline underline-offset-[6px] decoration-2'
+                        : 'text-stone-400 dark:text-stone-500 hover:text-stone-700 dark:hover:text-stone-300'
+                    }`}
+                  >
+                    {tag}
+                    <sup className="ml-1 text-[0.65em] text-stone-400 dark:text-stone-600">
+                      {n}
+                    </sup>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* List */}
+      {isLoading ? (
+        <div className="flex justify-center py-16">
+          <LoadingSpinner size="lg" />
+        </div>
+      ) : filtered.length === 0 ? (
+        <div className="py-16 text-center">
+          <p className="font-display text-2xl text-stone-700 dark:text-stone-300">
+            Nothing here yet
+          </p>
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-stone-400 mt-3">
+            Try a different filter
+          </p>
+        </div>
+      ) : (
+        <div>
+          {filtered.map((post) => (
+            <PostListItem key={post.slug} post={post} />
+          ))}
+        </div>
+      )}
     </div>
   )
 }

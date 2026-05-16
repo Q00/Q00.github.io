@@ -1,5 +1,11 @@
 import { Link } from '@tanstack/react-router';
-import { BlogPost, formatDate, generateStructuredData } from '@q00-blog/shared';
+import {
+  BlogPost,
+  formatDate,
+  generateStructuredData,
+  getPostLanguage,
+  getTopicTags,
+} from '@q00-blog/shared';
 import { MarkdownRenderer } from './MarkdownRenderer';
 import { useEffect } from 'react';
 
@@ -62,18 +68,21 @@ export const PostDetail = ({
     <article className={`max-w-4xl mx-auto ${className}`}>
       {/* Post Header */}
       <header className="mb-8">
-        {/* Category */}
-        {post.category && (
-          <div className="mb-4">
-            <span className="inline-block px-3 py-1 text-sm font-medium text-stone-700 dark:text-stone-300
-                         bg-stone-100 dark:bg-stone-800 rounded-md">
-              {post.category}
-            </span>
-          </div>
-        )}
+        {/* Eyebrow: series / primary topic + language */}
+        <div className="mb-5 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.22em] text-stone-400 dark:text-stone-500">
+          <span className="text-stone-600 dark:text-stone-300">
+            {post.series?.name || getTopicTags(post)[0] || 'Essay'}
+          </span>
+          {getPostLanguage(post) && (
+            <>
+              <span aria-hidden className="text-stone-300 dark:text-stone-700">/</span>
+              <span>{getPostLanguage(post)}</span>
+            </>
+          )}
+        </div>
 
         {/* Title */}
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
+        <h1 className="font-display text-4xl md:text-5xl font-medium text-stone-900 dark:text-white mb-4 leading-[1.15] tracking-tight">
           {post.title}
         </h1>
 
@@ -111,18 +120,16 @@ export const PostDetail = ({
         </div>
 
         {/* Tags */}
-        {post.tags && post.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-8">
-            {post.tags.map((tag) => (
+        {getTopicTags(post).length > 0 && (
+          <div className="flex flex-wrap gap-x-5 gap-y-2 mb-8 font-mono text-[11px] uppercase tracking-[0.16em]">
+            {getTopicTags(post).map((tag) => (
               <Link
                 key={tag}
                 to="/tags/$tag"
                 params={{ tag }}
-                className="inline-block px-3 py-1 text-sm text-gray-600 dark:text-gray-400
-                           bg-gray-100 dark:bg-gray-700 rounded-md hover:bg-gray-200
-                           dark:hover:bg-gray-600 transition-colors cursor-pointer"
+                className="text-stone-400 dark:text-stone-500 hover:text-stone-800 dark:hover:text-stone-200 transition-colors"
               >
-                #{tag}
+                {tag}
               </Link>
             ))}
           </div>

@@ -1,5 +1,11 @@
 import { Link } from '@tanstack/react-router';
-import { BlogPost, formatDate, formatRelativeDate } from '@q00-blog/shared';
+import {
+  BlogPost,
+  formatDate,
+  formatRelativeDate,
+  getPostLanguage,
+  getTopicTags,
+} from '@q00-blog/shared';
 
 interface PostCardProps {
   post: BlogPost;
@@ -8,121 +14,101 @@ interface PostCardProps {
   className?: string;
 }
 
-export const PostCard = ({ 
-  post, 
-  featured = false, 
-  showExcerpt = true, 
-  className = '' 
+export const PostCard = ({
+  post,
+  featured = false,
+  showExcerpt = true,
+  className = '',
 }: PostCardProps) => {
+  const language = getPostLanguage(post);
+  const topicTags = getTopicTags(post).slice(0, featured ? 5 : 3);
 
   const cardClasses = `
-    group relative overflow-hidden rounded-2xl border border-stone-200/60 dark:border-stone-700/60
-    bg-stone-50/80 dark:bg-stone-900/80 p-8 transition-all duration-200 ease-out
-    ${featured ? 'md:col-span-2 lg:col-span-2 ring-2 ring-stone-200 dark:ring-stone-700' : ''}
+    group relative flex flex-col h-full border border-stone-200 dark:border-stone-800
+    bg-stone-50/40 dark:bg-stone-900/40 p-7 transition-colors duration-200
+    hover:border-stone-400 dark:hover:border-stone-600
+    ${featured ? 'md:col-span-2 lg:col-span-2' : ''}
     ${className}
   `.trim();
 
   return (
     <article className={cardClasses}>
-      <div className="flex flex-col h-full">
-        {/* Post Series */}
-        {post.series && (
-          <div className="mb-4">
-            <Link
-              to="/series/$slug"
-              params={{ slug: post.series.slug }}
-              className="inline-flex items-center px-3 py-1.5 text-xs font-semibold text-stone-700 dark:text-stone-300
-                         bg-stone-100 dark:bg-stone-800
-                         rounded-full border border-stone-200/50 dark:border-stone-700/50"
-            >
-              📚 {post.series.name}
-            </Link>
-          </div>
-        )}
-
-        {/* Post Title */}
-        <h2 className="mb-4 transition-colors duration-300">
-          <Link
-            to="/posts/$slug"
-            params={{ slug: post.slug }}
-            className={`block font-bold leading-snug text-gray-900 dark:text-white tracking-tight
-                       ${featured ? 'text-2xl md:text-3xl' : 'text-xl'}`}
+      {/* Meta row */}
+      <div className="flex items-center justify-between gap-3 mb-5 font-mono text-[11px] uppercase tracking-[0.18em] text-stone-400 dark:text-stone-500">
+        <div className="flex items-center gap-2">
+          {post.series && (
+            <>
+              <Link
+                to="/series/$slug"
+                params={{ slug: post.series.slug }}
+                className="text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white transition-colors"
+              >
+                {post.series.name}
+              </Link>
+              <span aria-hidden className="text-stone-300 dark:text-stone-700">
+                /
+              </span>
+            </>
+          )}
+          <time
+            dateTime={
+              post.publishedAt instanceof Date
+                ? post.publishedAt.toISOString()
+                : post.publishedAt
+            }
+            title={formatDate(post.publishedAt)}
           >
-            {post.title}
-          </Link>
-        </h2>
-
-        {/* Post Excerpt */}
-        {showExcerpt && post.excerpt && (
-          <p className="mb-6 text-gray-600 dark:text-gray-300 leading-relaxed flex-grow
-                       text-base font-normal tracking-wide line-clamp-3">
-            {post.excerpt}
-          </p>
+            {formatRelativeDate(post.publishedAt)}
+          </time>
+        </div>
+        {language && (
+          <span className="border border-stone-300 dark:border-stone-700 rounded-full px-2 py-0.5 text-[10px] font-medium tracking-[0.2em] text-stone-500 dark:text-stone-400">
+            {language}
+          </span>
         )}
+      </div>
 
-        {/* Post Tags */}
-        {post.tags && post.tags.length > 0 && (
-          <div className="mb-6 flex flex-wrap gap-2">
-            {post.tags.slice(0, featured ? 6 : 3).map((tag) => (
+      {/* Title */}
+      <h2 className="mb-3">
+        <Link
+          to="/posts/$slug"
+          params={{ slug: post.slug }}
+          className={`font-display font-medium leading-[1.2] text-stone-900 dark:text-stone-50
+                      decoration-stone-300 dark:decoration-stone-600 underline-offset-[6px] group-hover:underline
+                      ${featured ? 'text-3xl md:text-4xl' : 'text-2xl'}`}
+        >
+          {post.title}
+        </Link>
+      </h2>
+
+      {/* Excerpt */}
+      {showExcerpt && post.excerpt && (
+        <p className="mb-6 text-[15px] leading-relaxed text-stone-600 dark:text-stone-400 line-clamp-3 flex-grow">
+          {post.excerpt}
+        </p>
+      )}
+
+      {/* Footer */}
+      <div className="mt-auto flex items-center justify-between gap-4 pt-5 border-t border-stone-200/70 dark:border-stone-800">
+        {topicTags.length > 0 ? (
+          <div className="flex flex-wrap gap-x-4 gap-y-1 font-mono text-[11px] uppercase tracking-[0.14em]">
+            {topicTags.map((tag) => (
               <Link
                 key={tag}
                 to="/tags/$tag"
                 params={{ tag }}
-                className="inline-flex items-center px-2.5 py-1 text-xs font-medium text-stone-700 dark:text-stone-300
-                           bg-stone-100/80 dark:bg-stone-700/80 rounded-lg
-                           transition-all duration-200 cursor-pointer
-                           border border-stone-200/50 dark:border-stone-600/50"
+                className="text-stone-400 dark:text-stone-500 hover:text-stone-800 dark:hover:text-stone-200 transition-colors"
               >
-                #{tag}
+                {tag}
               </Link>
             ))}
-            {post.tags.length > (featured ? 6 : 3) && (
-              <span className="inline-flex items-center px-2.5 py-1 text-xs font-medium text-gray-500 dark:text-gray-400
-                             bg-gray-50/50 dark:bg-gray-800/50 rounded-lg border border-gray-200/30 dark:border-gray-700/30">
-                +{post.tags.length - (featured ? 6 : 3)} more
-              </span>
-            )}
           </div>
+        ) : (
+          <span />
         )}
-
-        {/* Post Metadata */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm text-gray-500 dark:text-gray-400 mt-auto gap-2">
-          <div className="flex items-center flex-wrap gap-x-3 gap-y-1">
-            <time
-              dateTime={post.publishedAt instanceof Date ? post.publishedAt.toISOString() : post.publishedAt}
-              title={formatDate(post.publishedAt)}
-              className="shrink-0"
-            >
-              {formatRelativeDate(post.publishedAt)}
-            </time>
-            <span className="hidden sm:inline">•</span>
-            <span className="shrink-0">{post.readingTimeMinutes} min read</span>
-            {post.wordCount && (
-              <>
-                <span className="hidden lg:inline">•</span>
-                <span className="shrink-0 hidden lg:inline">{post.wordCount.toLocaleString()} words</span>
-              </>
-            )}
-          </div>
-
-          {post.author && (
-            <span className="font-medium text-gray-700 dark:text-gray-300 shrink-0 sm:text-right">
-              {post.author}
-            </span>
-          )}
-        </div>
-
-        {/* Featured Badge */}
-        {featured && (
-          <div className="absolute top-6 right-6">
-            <span className="inline-flex items-center px-3 py-1.5 text-xs font-bold text-amber-700 dark:text-amber-300
-                             bg-gradient-to-r from-amber-50 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-800/30
-                             rounded-full border border-amber-200/60 dark:border-amber-700/60 backdrop-blur-sm
-                             shadow-lg shadow-amber-200/50 dark:shadow-amber-900/30">
-              ✨ Featured
-            </span>
-          </div>
-        )}
+        <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-stone-400 dark:text-stone-500 shrink-0">
+          {post.readingTimeMinutes} min
+        </span>
       </div>
     </article>
   );
