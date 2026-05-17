@@ -1,7 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { getPostLanguage, getTopicTags, type PostLanguage } from '@q00-blog/shared'
 import { useBlog } from '@/contexts/BlogContext'
+import { useLang } from '@/contexts/LangContext'
 import { PostListItem } from '@/components/blog/PostListItem'
 import { LoadingSpinner } from '@q00-blog/ui'
 
@@ -19,8 +20,14 @@ const LANGS: Array<{ key: LangFilter; label: string }> = [
 
 function PostsPage() {
   const { posts, isLoading, error } = useBlog()
-  const [lang, setLang] = useState<LangFilter>('all')
+  const { lang: prefLang } = useLang()
+  const [lang, setLang] = useState<LangFilter>(prefLang)
   const [topic, setTopic] = useState<string | null>(null)
+
+  // Follow the site-wide language preference (header toggle / auto-detect).
+  useEffect(() => {
+    setLang(prefLang)
+  }, [prefLang])
 
   // Topic facets that actually help navigate the archive: real tags shared by
   // more than one post, busiest first.

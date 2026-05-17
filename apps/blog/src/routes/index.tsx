@@ -8,6 +8,7 @@ import {
 } from '@q00-blog/shared'
 import { ENV } from '@/config/env'
 import { useBlog } from '@/contexts/BlogContext'
+import { useLang } from '@/contexts/LangContext'
 import { NoteCard } from '@/components/blog/NoteCard'
 import { LoadingSpinner } from '@q00-blog/ui'
 
@@ -46,6 +47,7 @@ function SectionLabel({ children }: { children: ReactNode }) {
 
 function Home() {
   const { posts, series, isLoading, error } = useBlog()
+  const { lang } = useLang()
   const notes = getLocalNotes().slice(0, 4)
 
   if (error) {
@@ -67,8 +69,14 @@ function Home() {
     )
   }
 
-  const latest = posts[0]
-  const ouroboros = series.find((s) => s.slug === 'ouroboros')
+  const inLang = posts.filter((p) => getPostLanguage(p) === lang)
+  const latest = inLang[0] || posts[0]
+  const ouroborosSeries = series.find((s) => s.slug === 'ouroboros')
+  const ouroborosPosts = (() => {
+    const all = ouroborosSeries?.posts ?? []
+    const filtered = all.filter((p) => getPostLanguage(p) === lang)
+    return filtered.length > 0 ? filtered : all
+  })()
 
   return (
     <div className="container mx-auto max-w-3xl px-4 py-14 sm:py-20">
@@ -160,7 +168,7 @@ function Home() {
       )}
 
       {/* Ouroboros */}
-      {ouroboros && ouroboros.posts.length > 0 && (
+      {ouroborosSeries && ouroborosPosts.length > 0 && (
         <section className="mt-16 sm:mt-20 border-t border-stone-200 dark:border-stone-800 pt-12">
           <SectionLabel>Ouroboros</SectionLabel>
           <p className="text-[17px] leading-relaxed text-stone-600 dark:text-stone-300 max-w-2xl">
@@ -177,7 +185,7 @@ function Home() {
             github.com/Q00/ouroboros ↗
           </a>
           <ol className="mt-8 space-y-px">
-            {ouroboros.posts.map((p, i) => (
+            {ouroborosPosts.map((p, i) => (
               <li key={p.slug}>
                 <Link
                   to="/posts/$slug"

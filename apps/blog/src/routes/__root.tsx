@@ -4,6 +4,7 @@ import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import { ErrorBoundary } from '@q00-blog/ui'
 import { ThemeProvider } from '@/contexts/ThemeContext'
 import { BlogProvider } from '@/contexts/BlogContext'
+import { LangProvider } from '@/contexts/LangContext'
 import { Layout } from '@/components/layout/Layout'
 
 export const Route = createRootRoute({
@@ -11,10 +12,12 @@ export const Route = createRootRoute({
     <ErrorBoundary>
       <ThemeProvider>
         <BlogProvider>
-          <Layout>
-            <Outlet />
-          </Layout>
-          {!import.meta.env.PROD && <TanStackRouterDevtools />}
+          <LangProvider>
+            <Layout>
+              <Outlet />
+            </Layout>
+            {!import.meta.env.PROD && <TanStackRouterDevtools />}
+          </LangProvider>
         </BlogProvider>
       </ThemeProvider>
     </ErrorBoundary>

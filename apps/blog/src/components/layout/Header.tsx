@@ -2,6 +2,29 @@ import { useState } from 'react';
 import { Link } from '@tanstack/react-router';
 import { ENV } from '@/config/env';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useLang } from '@/contexts/LangContext';
+
+const LangToggle = () => {
+  const { lang, setLang } = useLang();
+  return (
+    <div className="inline-flex font-mono text-[11px] uppercase tracking-[0.16em]" role="group" aria-label="Content language">
+      {(['ko', 'en'] as const).map((l) => (
+        <button
+          key={l}
+          onClick={() => setLang(l)}
+          aria-pressed={lang === l}
+          className={`px-2 py-1 transition-colors ${
+            lang === l
+              ? 'text-stone-900 dark:text-stone-100'
+              : 'text-stone-400 dark:text-stone-600 hover:text-stone-600 dark:hover:text-stone-400'
+          }`}
+        >
+          {l}
+        </button>
+      ))}
+    </div>
+  );
+};
 
 interface HeaderProps {
   className?: string;
@@ -104,6 +127,8 @@ export const Header = ({ className = '' }: HeaderProps) => {
                 <circle cx="5" cy="19" r="1"/>
               </svg>
             </a>
+
+            <LangToggle />
 
             <ThemeToggle />
 
