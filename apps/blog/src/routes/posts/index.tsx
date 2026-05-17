@@ -60,19 +60,9 @@ function PostsPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12 sm:py-16 max-w-3xl">
-      {/* Masthead */}
-      <header className="mb-10 sm:mb-14">
-        <p className="font-mono text-xs uppercase tracking-[0.28em] text-stone-400 dark:text-stone-500">
-          Index — {posts.length} {posts.length === 1 ? 'essay' : 'essays'}
-        </p>
-        <h1 className="font-display text-5xl sm:text-6xl font-medium text-stone-900 dark:text-white mt-3 tracking-tight">
-          Writing
-        </h1>
-      </header>
-
+    <div className="container mx-auto px-4 py-10 sm:py-14 max-w-3xl">
       {/* Toolbar */}
-      <div className="flex flex-col gap-5 border-y border-stone-200 dark:border-stone-800 py-5 mb-10">
+      <div className="flex flex-col gap-5 border-b border-stone-200 dark:border-stone-800 pb-5 mb-10">
         <div className="flex items-center justify-between gap-4 flex-wrap">
           <span className="font-mono text-xs uppercase tracking-[0.2em] text-stone-400 dark:text-stone-500">
             Language
