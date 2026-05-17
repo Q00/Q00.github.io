@@ -81,17 +81,6 @@ export const Header = ({ className = '' }: HeaderProps) => {
             >
               Posts
             </Link>
-
-            <Link
-              to="/about"
-              className="text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white
-                         transition-colors font-medium"
-              activeProps={{
-                className: 'text-stone-900 dark:text-white'
-              }}
-            >
-              About
-            </Link>
           </nav>
 
           {/* Actions */}
@@ -176,18 +165,6 @@ export const Header = ({ className = '' }: HeaderProps) => {
                 }}
               >
                 Posts
-              </Link>
-
-              <Link
-                to="/about"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="px-3 py-2 text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white
-                           hover:bg-stone-100 dark:hover:bg-stone-800 rounded-md transition-colors font-medium"
-                activeProps={{
-                  className: 'text-stone-900 dark:text-white bg-stone-100 dark:bg-stone-800'
-                }}
-              >
-                About
               </Link>
 
               {/* RSS Link for Mobile */}

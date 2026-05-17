@@ -78,10 +78,10 @@ function Home() {
           Jaegyu&nbsp;Lee
         </h1>
         <p className="mt-4 text-lg leading-relaxed text-stone-600 dark:text-stone-300 max-w-xl">
-          Engineer working on edutech and context-driven AI. I build{' '}
+          I make non-deterministic things deterministic. I build{' '}
           <span className="text-stone-900 dark:text-stone-100">Ouroboros</span>,
-          a self-referential AI harness, and write about what breaks along the
-          way.
+          a self-referential AI harness that turns vague intent into verifiable
+          specs, and write about what breaks along the way.
         </p>
         <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 font-mono text-[11px] uppercase tracking-[0.16em]">
           {socials.map((s) => (
