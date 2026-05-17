@@ -77,6 +77,59 @@ export function isDraftFile(name: string): boolean {
   return name.startsWith('draft-');
 }
 
+// Short "scrap" notes (collected from LinkedIn etc.) live in the same backup
+// repo, prefixed note_ so they form a separate lane from canonical essays.
+export function isNoteFile(name: string): boolean {
+  return name.startsWith('note_') || name.startsWith('note-');
+}
+
+export interface Note {
+  id: string;
+  title?: string;
+  body: string;
+  date: Date;
+  source?: string;
+  tags: string[];
+}
+
+function toNote(file: RawMarkdownFile): Note | null {
+  const { data, body } = parseFrontmatter(file.raw);
+  const text = body.trim();
+  if (!text) return null;
+
+  const rawDate = data.datePublished || data.date || '';
+  const parsed = new Date(rawDate);
+  const date = isNaN(parsed.getTime()) ? new Date() : parsed;
+
+  const id = (
+    data.slug ||
+    data.cuid ||
+    file.name.replace(/^note[_-]/, '').replace(/\.md$/, '')
+  ).trim();
+
+  const tags = (data.tags || '')
+    .split(',')
+    .map((t) => t.trim())
+    .filter(Boolean);
+
+  return {
+    id,
+    title: data.title?.trim() || undefined,
+    body: text,
+    date,
+    source: data.source?.trim() || data.url?.trim() || undefined,
+    tags,
+  };
+}
+
+export function parseNotes(files: RawMarkdownFile[]): Note[] {
+  return files
+    .filter((f) => isNoteFile(f.name) && !isDraftFile(f.name))
+    .map(toNote)
+    .filter((n): n is Note => n !== null)
+    .sort((a, b) => b.date.getTime() - a.date.getTime());
+}
+
 function toBlogPost(file: RawMarkdownFile): BlogPost | null {
   const { data, body } = parseFrontmatter(file.raw);
   const slug = (data.slug || file.name.replace(/\.md$/, '')).trim();
@@ -123,7 +176,7 @@ function toBlogPost(file: RawMarkdownFile): BlogPost | null {
 
 export function parseMarkdownPosts(files: RawMarkdownFile[]): BlogPost[] {
   return files
-    .filter((f) => !isDraftFile(f.name))
+    .filter((f) => !isDraftFile(f.name) && !isNoteFile(f.name))
     .map(toBlogPost)
     .filter((p): p is BlogPost => p !== null)
     .sort((a, b) => b.publishedAt.getTime() - a.publishedAt.getTime());

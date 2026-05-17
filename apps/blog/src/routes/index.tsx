@@ -1,133 +1,235 @@
+import type { ReactNode } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
+import {
+  formatDate,
+  formatRelativeDate,
+  getPostLanguage,
+  getLocalNotes,
+} from '@q00-blog/shared'
 import { ENV } from '@/config/env'
 import { useBlog } from '@/contexts/BlogContext'
-import { PostListItem } from '@/components/blog/PostListItem'
-import { SeriesListItem } from '@/components/blog/SeriesListItem'
+import { NoteCard } from '@/components/blog/NoteCard'
 import { LoadingSpinner } from '@q00-blog/ui'
 
 export const Route = createFileRoute('/')({
   component: Home,
   head: () => ({
     meta: [
-      {
-        title: `${ENV.SITE_TITLE} - ${ENV.SITE_DESCRIPTION}`,
-      },
-      {
-        name: 'description',
-        content: ENV.SITE_DESCRIPTION,
-      },
+      { title: `${ENV.SITE_TITLE} - ${ENV.SITE_DESCRIPTION}` },
+      { name: 'description', content: ENV.SITE_DESCRIPTION },
     ],
     links: [
       {
         rel: 'alternate',
         type: 'application/rss+xml',
         title: `${ENV.SITE_TITLE} RSS Feed`,
-        href: '/rss/xml',
-      },
-      {
-        rel: 'alternate',
-        type: 'application/atom+xml',
-        title: `${ENV.SITE_TITLE} Atom Feed`,
-        href: '/atom/xml',
+        href: '/rss.xml',
       },
     ],
   }),
 })
 
+const socials: Array<{ label: string; href: string }> = [
+  { label: 'X', href: 'https://x.com/jqonly' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/q00' },
+  { label: 'GitHub', href: 'https://github.com/Q00' },
+  { label: 'YouTube', href: 'https://www.youtube.com/@Q00_Dev' },
+]
+
+function SectionLabel({ children }: { children: ReactNode }) {
+  return (
+    <p className="font-mono text-xs uppercase tracking-[0.28em] text-stone-400 dark:text-stone-500 mb-6">
+      {children}
+    </p>
+  )
+}
+
 function Home() {
   const { posts, series, isLoading, error } = useBlog()
+  const notes = getLocalNotes().slice(0, 4)
 
   if (error) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-red-600 mb-4">Error Loading Posts</h1>
-          <p className="text-gray-600 dark:text-gray-300">{error}</p>
-        </div>
+      <div className="container mx-auto max-w-3xl px-4 py-16">
+        <h1 className="font-display text-3xl text-stone-900 dark:text-white">
+          Could not load
+        </h1>
+        <p className="text-stone-600 dark:text-stone-300 mt-3">{error}</p>
       </div>
     )
   }
 
   if (isLoading) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex justify-center py-12">
-          <LoadingSpinner size="lg" />
-        </div>
+      <div className="container mx-auto px-4 py-24 flex justify-center">
+        <LoadingSpinner size="lg" />
       </div>
     )
   }
 
-  const recentPosts = posts.slice(0, 3)
+  const latest = posts[0]
+  const ouroboros = series.find((s) => s.slug === 'ouroboros')
 
   return (
-    <div className="container mx-auto px-4 py-12">
-      {/* Recent Posts Section */}
-      <section className="mb-16">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-12">
-          <div>
-            <h2 className="text-3xl font-bold text-stone-900 dark:text-white mb-4 tracking-tight">
-              Recent Posts
-            </h2>
-            <p className="text-stone-600 dark:text-stone-300">
-              Latest articles and insights
-            </p>
-          </div>
-          <Link
-            to="/posts"
-            className="inline-flex items-center justify-center px-4 py-2 sm:px-6 sm:py-3 text-sm font-semibold text-stone-700 dark:text-stone-300
-                       bg-stone-100 dark:bg-stone-800 rounded-xl transition-all duration-300
-                       border border-stone-200 dark:border-stone-700 hover:bg-stone-200 dark:hover:bg-stone-700
-                       self-start sm:self-auto"
-          >
-            <span className="sm:hidden">All posts</span>
-            <span className="hidden sm:inline">View all posts</span>
-            <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </Link>
+    <div className="container mx-auto max-w-3xl px-4 py-14 sm:py-20">
+      {/* Identity */}
+      <section>
+        <h1 className="font-display text-4xl sm:text-5xl font-medium text-stone-900 dark:text-white tracking-tight">
+          Jaegyu&nbsp;Lee
+        </h1>
+        <p className="mt-4 text-lg leading-relaxed text-stone-600 dark:text-stone-300 max-w-xl">
+          Engineer working on edutech and context-driven AI. I build{' '}
+          <span className="text-stone-900 dark:text-stone-100">Ouroboros</span>,
+          a self-referential AI harness, and write about what breaks along the
+          way.
+        </p>
+        <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 font-mono text-[11px] uppercase tracking-[0.16em]">
+          {socials.map((s) => (
+            <a
+              key={s.label}
+              href={s.href}
+              target="_blank"
+              rel="noreferrer"
+              className="text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors"
+            >
+              {s.label} ↗
+            </a>
+          ))}
         </div>
-
-        {recentPosts.length > 0 ? (
-          <div className="max-w-4xl">
-            {recentPosts.map((post) => (
-              <PostListItem
-                key={post.slug}
-                post={post}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-8">
-            <p className="text-stone-500 dark:text-stone-400">No posts found.</p>
-          </div>
-        )}
       </section>
 
-      {/* Divider */}
-      {series.length > 0 && (
-        <div className="mb-16">
-          <div className="w-full max-w-sm h-px bg-stone-200 dark:bg-stone-700"></div>
-        </div>
+      {/* Latest essay */}
+      {latest && (
+        <section className="mt-16 sm:mt-20 border-t border-stone-200 dark:border-stone-800 pt-12">
+          <SectionLabel>Latest</SectionLabel>
+          <div className="flex items-center gap-3 mb-3 font-mono text-[11px] uppercase tracking-[0.18em] text-stone-400 dark:text-stone-500">
+            <time
+              dateTime={
+                latest.publishedAt instanceof Date
+                  ? latest.publishedAt.toISOString()
+                  : latest.publishedAt
+              }
+              title={formatDate(latest.publishedAt)}
+            >
+              {formatRelativeDate(latest.publishedAt)}
+            </time>
+            <span aria-hidden className="text-stone-300 dark:text-stone-700">
+              /
+            </span>
+            <span>{latest.readingTimeMinutes} min</span>
+            {getPostLanguage(latest) && (
+              <>
+                <span aria-hidden className="text-stone-300 dark:text-stone-700">
+                  /
+                </span>
+                <span>{getPostLanguage(latest)}</span>
+              </>
+            )}
+          </div>
+          <h2 className="mb-4">
+            <Link
+              to="/posts/$slug"
+              params={{ slug: latest.slug }}
+              className="font-display text-3xl sm:text-[40px] leading-[1.15] font-medium text-stone-900 dark:text-stone-50
+                         underline-offset-[6px] decoration-stone-300 dark:decoration-stone-600 hover:underline"
+            >
+              {latest.title}
+            </Link>
+          </h2>
+          {latest.excerpt && (
+            <p className="text-[17px] leading-relaxed text-stone-600 dark:text-stone-400 max-w-2xl">
+              {latest.excerpt}
+            </p>
+          )}
+          <div className="mt-6 flex items-center gap-6 font-mono text-[11px] uppercase tracking-[0.18em]">
+            <Link
+              to="/posts/$slug"
+              params={{ slug: latest.slug }}
+              className="text-stone-900 dark:text-stone-100 hover:opacity-60 transition-opacity"
+            >
+              Read essay →
+            </Link>
+            <Link
+              to="/posts"
+              className="text-stone-400 dark:text-stone-500 hover:text-stone-700 dark:hover:text-stone-300 transition-colors"
+            >
+              All writing
+            </Link>
+          </div>
+        </section>
       )}
 
-      {/* Series Section */}
-      {series.length > 0 && (
-        <section>
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold text-stone-900 dark:text-white mb-4 tracking-tight">Series</h2>
-          </div>
+      {/* Ouroboros */}
+      {ouroboros && ouroboros.posts.length > 0 && (
+        <section className="mt-16 sm:mt-20 border-t border-stone-200 dark:border-stone-800 pt-12">
+          <SectionLabel>Ouroboros</SectionLabel>
+          <p className="text-[17px] leading-relaxed text-stone-600 dark:text-stone-300 max-w-2xl">
+            A self-referential AI development harness: it interviews you into a
+            Seed spec, decomposes it, runs the work in split sessions, and
+            evolves until it converges. These essays are the build log.
+          </p>
+          <a
+            href="https://github.com/Q00/ouroboros"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-block mt-4 font-mono text-[11px] uppercase tracking-[0.18em] text-stone-900 dark:text-stone-100 hover:opacity-60 transition-opacity"
+          >
+            github.com/Q00/ouroboros ↗
+          </a>
+          <ol className="mt-8 space-y-px">
+            {ouroboros.posts.map((p, i) => (
+              <li key={p.slug}>
+                <Link
+                  to="/posts/$slug"
+                  params={{ slug: p.slug }}
+                  className="group flex items-baseline gap-4 py-3 border-t border-stone-200/70 dark:border-stone-800"
+                >
+                  <span className="font-mono text-[11px] text-stone-400 dark:text-stone-600 tabular-nums">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <span className="font-display text-lg text-stone-800 dark:text-stone-200 group-hover:underline underline-offset-[5px] decoration-stone-300 dark:decoration-stone-600">
+                    {p.title}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
 
-          <div className="max-w-4xl">
-            {series.map((seriesItem) => (
-              <SeriesListItem
-                key={seriesItem.id}
-                series={seriesItem}
-              />
+      {/* Notes */}
+      {notes.length > 0 && (
+        <section className="mt-16 sm:mt-20 border-t border-stone-200 dark:border-stone-800 pt-12">
+          <div className="flex items-baseline justify-between gap-4">
+            <SectionLabel>Notes</SectionLabel>
+            <Link
+              to="/notes"
+              className="font-mono text-[11px] uppercase tracking-[0.18em] text-stone-400 dark:text-stone-500 hover:text-stone-700 dark:hover:text-stone-300 transition-colors"
+            >
+              All notes →
+            </Link>
+          </div>
+          <div className="grid gap-x-6 gap-y-10 sm:grid-cols-2">
+            {notes.map((note, i) => (
+              <NoteCard key={note.id} note={note} index={i} />
             ))}
           </div>
         </section>
       )}
+
+      {/* Talks */}
+      <section className="mt-16 sm:mt-20 border-t border-stone-200 dark:border-stone-800 pt-12">
+        <SectionLabel>Talks</SectionLabel>
+        <p className="text-[17px] leading-relaxed text-stone-600 dark:text-stone-300 max-w-2xl">
+          Decks from meetups and lectures — Ouroboros deep dives, RLM, and more.
+        </p>
+        <a
+          href="/public-presentation/"
+          className="inline-block mt-4 font-mono text-[11px] uppercase tracking-[0.18em] text-stone-900 dark:text-stone-100 hover:opacity-60 transition-opacity"
+        >
+          Presentations ↗
+        </a>
+      </section>
     </div>
   )
 }

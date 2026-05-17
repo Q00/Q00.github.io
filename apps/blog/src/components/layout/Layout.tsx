@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import { useLocation } from '@tanstack/react-router';
 import { Header } from './Header';
 import { MinimalHeader } from './MinimalHeader';
+import { Footer } from './Footer';
 
 interface LayoutProps {
   children: ReactNode;
@@ -19,6 +20,8 @@ export const Layout = ({ children, className = '' }: LayoutProps) => {
       <main className={`flex-grow ${isPostDetailPage ? 'pt-16' : ''} ${className}`}>
         {children}
       </main>
+
+      <Footer />
     </div>
   );
 };

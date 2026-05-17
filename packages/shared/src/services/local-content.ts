@@ -1,7 +1,7 @@
 import { BlogPost, BlogMetadata } from '../types/blog';
 import { CONFIG } from '../constants/config';
 import { ContentProvider } from './content';
-import { parseMarkdownPosts, RawMarkdownFile } from './markdown';
+import { parseMarkdownPosts, parseNotes, Note, RawMarkdownFile } from './markdown';
 
 // Posts that carry this tag are grouped into a reconstructed series, since the
 // Hashnode GitHub backup does not store series membership in frontmatter.
@@ -10,9 +10,15 @@ const SERIES_DEFS = [
 ] as const;
 
 let registeredPosts: BlogPost[] = [];
+let registeredNotes: Note[] = [];
 
 export function registerLocalPosts(files: RawMarkdownFile[]): void {
   registeredPosts = parseMarkdownPosts(files);
+  registeredNotes = parseNotes(files);
+}
+
+export function getLocalNotes(): Note[] {
+  return registeredNotes;
 }
 
 function seriesDefForPost(post: BlogPost) {

@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PostsIndexRouteImport } from './routes/posts/index'
+import { Route as NotesIndexRouteImport } from './routes/notes/index'
 import { Route as TagsTagRouteImport } from './routes/tags/$tag'
 import { Route as SeriesSlugRouteImport } from './routes/series/$slug'
 import { Route as PostsSlugRouteImport } from './routes/posts/$slug'
@@ -29,6 +30,11 @@ const IndexRoute = IndexRouteImport.update({
 const PostsIndexRoute = PostsIndexRouteImport.update({
   id: '/posts/',
   path: '/posts/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotesIndexRoute = NotesIndexRouteImport.update({
+  id: '/notes/',
+  path: '/notes/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TagsTagRoute = TagsTagRouteImport.update({
@@ -53,7 +59,8 @@ export interface FileRoutesByFullPath {
   '/posts/$slug': typeof PostsSlugRoute
   '/series/$slug': typeof SeriesSlugRoute
   '/tags/$tag': typeof TagsTagRoute
-  '/posts': typeof PostsIndexRoute
+  '/notes/': typeof NotesIndexRoute
+  '/posts/': typeof PostsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -61,6 +68,7 @@ export interface FileRoutesByTo {
   '/posts/$slug': typeof PostsSlugRoute
   '/series/$slug': typeof SeriesSlugRoute
   '/tags/$tag': typeof TagsTagRoute
+  '/notes': typeof NotesIndexRoute
   '/posts': typeof PostsIndexRoute
 }
 export interface FileRoutesById {
@@ -70,6 +78,7 @@ export interface FileRoutesById {
   '/posts/$slug': typeof PostsSlugRoute
   '/series/$slug': typeof SeriesSlugRoute
   '/tags/$tag': typeof TagsTagRoute
+  '/notes/': typeof NotesIndexRoute
   '/posts/': typeof PostsIndexRoute
 }
 export interface FileRouteTypes {
@@ -80,7 +89,8 @@ export interface FileRouteTypes {
     | '/posts/$slug'
     | '/series/$slug'
     | '/tags/$tag'
-    | '/posts'
+    | '/notes/'
+    | '/posts/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -88,6 +98,7 @@ export interface FileRouteTypes {
     | '/posts/$slug'
     | '/series/$slug'
     | '/tags/$tag'
+    | '/notes'
     | '/posts'
   id:
     | '__root__'
@@ -96,6 +107,7 @@ export interface FileRouteTypes {
     | '/posts/$slug'
     | '/series/$slug'
     | '/tags/$tag'
+    | '/notes/'
     | '/posts/'
   fileRoutesById: FileRoutesById
 }
@@ -105,6 +117,7 @@ export interface RootRouteChildren {
   PostsSlugRoute: typeof PostsSlugRoute
   SeriesSlugRoute: typeof SeriesSlugRoute
   TagsTagRoute: typeof TagsTagRoute
+  NotesIndexRoute: typeof NotesIndexRoute
   PostsIndexRoute: typeof PostsIndexRoute
 }
 
@@ -127,8 +140,15 @@ declare module '@tanstack/react-router' {
     '/posts/': {
       id: '/posts/'
       path: '/posts'
-      fullPath: '/posts'
+      fullPath: '/posts/'
       preLoaderRoute: typeof PostsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notes/': {
+      id: '/notes/'
+      path: '/notes'
+      fullPath: '/notes/'
+      preLoaderRoute: typeof NotesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/tags/$tag': {
@@ -161,6 +181,7 @@ const rootRouteChildren: RootRouteChildren = {
   PostsSlugRoute: PostsSlugRoute,
   SeriesSlugRoute: SeriesSlugRoute,
   TagsTagRoute: TagsTagRoute,
+  NotesIndexRoute: NotesIndexRoute,
   PostsIndexRoute: PostsIndexRoute,
 }
 export const routeTree = rootRouteImport
